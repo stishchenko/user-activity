@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan({"com.tish"})
-@MapperScan({"com.tish.mapper"})
+@MapperScan({"com.tish.mappers"})
 public class DataSourceConfig {
 
 	@Bean
