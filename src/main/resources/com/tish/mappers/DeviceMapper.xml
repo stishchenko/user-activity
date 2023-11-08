@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.DeviceMapper">
+
+	<resultMap id="userMap" type="com.tish.models.Device">
+		<id property="device_id" column="device_id" jdbcType="VARCHAR"/>
+		<result property="type" column="type" jdbcType="VARCHAR"/>
+		<result property="os_platform" column="os_platform" jdbcType="VARCHAR"/>
+		<result property="browser" column="browser" jdbcType="VARCHAR"/>
+	</resultMap>
+
+</mapper>

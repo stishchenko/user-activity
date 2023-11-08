@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.VisitMapper">
+
+	<resultMap id="userMap" type="com.tish.models.Visit">
+		<id property="id" column="id" jdbcType="INTEGER"/>
+		<result property="user_id" column="user_id" jdbcType="VARCHAR"/>
+		<result property="device_id" column="device_id" jdbcType="VARCHAR"/>
+		<result property="ip" column="ip" jdbcType="VARCHAR"/>
+		<result property="web_app" column="web_app" jdbcType="VARCHAR"
+				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+		<result property="page" column="page" jdbcType="VARCHAR"/>
+		<result property="visit_time" column="visit_time" jdbcType="VARCHAR"/>
+	</resultMap>
+
+</mapper>
