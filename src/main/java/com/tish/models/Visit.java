@@ -14,7 +14,7 @@ public class Visit {
 	private Integer id;
 	private String user_id;
 	private String device_id;
-	private String ip;
+	private Integer location_id;
 	private WebApp web_app;
 	private String page;
 	private String visit_time;
