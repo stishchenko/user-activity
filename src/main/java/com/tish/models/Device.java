@@ -1,5 +1,6 @@
 package com.tish.models;
 
+import com.tish.consts.WebApp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class Device {
 	private String type;
 	private String os_platform;
 	private String browser;
+	private WebApp web_app;
 }

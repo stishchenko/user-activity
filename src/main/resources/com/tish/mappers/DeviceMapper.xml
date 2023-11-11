@@ -9,6 +9,8 @@
 		<result property="type" column="type" jdbcType="VARCHAR"/>
 		<result property="os_platform" column="os_platform" jdbcType="VARCHAR"/>
 		<result property="browser" column="browser" jdbcType="VARCHAR"/>
+		<result property="web_app" column="web_app" jdbcType="VARCHAR"
+				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
 	</resultMap>
 
 </mapper>

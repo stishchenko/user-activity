@@ -8,6 +8,8 @@
 		<id property="id" column="id" jdbcType="INTEGER"/>
 		<result property="user_id" column="user_id" jdbcType="VARCHAR"/>
 		<result property="device_id" column="device_id" jdbcType="VARCHAR"/>
+		<result property="web_app" column="web_app" jdbcType="VARCHAR"
+				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
 	</resultMap>
 
 </mapper>
