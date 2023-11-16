@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public class VisitDaoImpl implements VisitDao {
 
@@ -18,6 +19,16 @@ public class VisitDaoImpl implements VisitDao {
 
 	@Override
 	public Integer getTotalVisitsAmount() {
+		return null;
+	}
+
+	@Override
+	public List<StatisticsPair> getVisitsAmountByPeriod(String fromDate, String toDate) {
+		return null;
+	}
+
+	@Override
+	public List<StatisticsPair> getTargetVisitsByPeriod(String fromDate, String toDate) {
 		return null;
 	}
 }
