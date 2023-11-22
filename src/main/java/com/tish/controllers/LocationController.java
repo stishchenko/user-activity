@@ -28,7 +28,7 @@ public class LocationController {
 
 	@GetMapping(path = {"/city"})
 	public void getCities() {
-		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user");
-		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit");
+		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user");
+		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit");
 	}
 }

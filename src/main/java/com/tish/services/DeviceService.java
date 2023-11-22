@@ -1,7 +1,7 @@
 package com.tish.services;
 
 import com.tish.daos.DeviceDao;
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +24,9 @@ public class DeviceService {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<StatisticsPair> pairList = deviceDao.getDeviceStatisticsByType();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByType();
 		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
-		for (StatisticsPair pair : pairList) {
+		for (IntegerStatisticsPair pair : pairList) {
 			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}
@@ -38,9 +38,9 @@ public class DeviceService {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<StatisticsPair> pairList = deviceDao.getDeviceStatisticsByOS();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOS();
 		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
-		for (StatisticsPair pair : pairList) {
+		for (IntegerStatisticsPair pair : pairList) {
 			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}
@@ -52,9 +52,9 @@ public class DeviceService {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<StatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowser();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowser();
 		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
-		for (StatisticsPair pair : pairList) {
+		for (IntegerStatisticsPair pair : pairList) {
 			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}

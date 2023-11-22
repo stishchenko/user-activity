@@ -1,16 +1,16 @@
 package com.tish.daos;
 
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 
 import java.util.List;
 
 public interface LocationDao {
 
-	List<StatisticsPair> getCountryStatisticsByUsers();
+	List<IntegerStatisticsPair> getCountryStatisticsByUsers();
 
-	List<StatisticsPair> getCountryStatisticsByVisits();
+	List<IntegerStatisticsPair> getCountryStatisticsByVisits();
 
-	List<StatisticsPair> getCityStatisticsByUsers();
+	List<IntegerStatisticsPair> getCityStatisticsByUsers();
 
-	List<StatisticsPair> getCityStatisticsByVisits();
+	List<IntegerStatisticsPair> getCityStatisticsByVisits();
 }

@@ -1,7 +1,7 @@
 package com.tish.daos;
 
 import com.tish.mappers.LocationMapper;
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,22 +17,22 @@ public class LocationDaoImpl implements LocationDao {
 	}
 
 	@Override
-	public List<StatisticsPair> getCountryStatisticsByUsers() {
+	public List<IntegerStatisticsPair> getCountryStatisticsByUsers() {
 		return null;
 	}
 
 	@Override
-	public List<StatisticsPair> getCountryStatisticsByVisits() {
+	public List<IntegerStatisticsPair> getCountryStatisticsByVisits() {
 		return null;
 	}
 
 	@Override
-	public List<StatisticsPair> getCityStatisticsByUsers() {
+	public List<IntegerStatisticsPair> getCityStatisticsByUsers() {
 		return null;
 	}
 
 	@Override
-	public List<StatisticsPair> getCityStatisticsByVisits() {
+	public List<IntegerStatisticsPair> getCityStatisticsByVisits() {
 		return null;
 	}
 }

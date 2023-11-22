@@ -1,7 +1,7 @@
 package com.tish.daos;
 
 import com.tish.mappers.DeviceMapper;
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,17 +22,17 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public List<StatisticsPair> getDeviceStatisticsByType() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByType() {
 		return null;
 	}
 
 	@Override
-	public List<StatisticsPair> getDeviceStatisticsByOS() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByOS() {
 		return null;
 	}
 
 	@Override
-	public List<StatisticsPair> getDeviceStatisticsByBrowser() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowser() {
 		return null;
 	}
 }

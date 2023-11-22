@@ -1,7 +1,6 @@
 package com.tish.daos;
 
-import com.tish.mappers.DeviceMapper;
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 
 import java.util.List;
 
@@ -9,8 +8,8 @@ public interface DeviceDao {
 
 	Integer getDevicesAmount();
 
-	List<StatisticsPair> getDeviceStatisticsByType();
-	List<StatisticsPair> getDeviceStatisticsByOS();
-	List<StatisticsPair> getDeviceStatisticsByBrowser();
+	List<IntegerStatisticsPair> getDeviceStatisticsByType();
+	List<IntegerStatisticsPair> getDeviceStatisticsByOS();
+	List<IntegerStatisticsPair> getDeviceStatisticsByBrowser();
 
 }

@@ -17,6 +17,6 @@ public class Visit {
 	private Integer location_id;
 	private WebApp web_app;
 	private String page;
-	private String visit_time;
+	private Double visit_time;
 	private Integer target_action;
 }

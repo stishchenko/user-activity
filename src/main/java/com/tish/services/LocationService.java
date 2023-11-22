@@ -3,7 +3,7 @@ package com.tish.services;
 import com.tish.daos.LocationDao;
 import com.tish.daos.UserDao;
 import com.tish.daos.VisitDao;
-import com.tish.models.StatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalUsers = userDao.getTotalUsersAmount();
-		List<StatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
 
 		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 		listMap.add(valueMap);
@@ -60,7 +60,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalVisits = visitDao.getTotalVisitsAmount();
-		List<StatisticsPair> pairList = locationDao.getCountryStatisticsByVisits();
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByVisits();
 
 		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 		listMap.add(valueMap);
@@ -90,7 +90,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalUsers = userDao.getTotalUsersAmount();
-		List<StatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
 
 		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 		listMap.add(valueMap);
@@ -105,7 +105,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalVisits = visitDao.getTotalVisitsAmount();
-		List<StatisticsPair> pairList = locationDao.getCityStatisticsByVisits();
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisits();
 
 		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 		listMap.add(valueMap);
