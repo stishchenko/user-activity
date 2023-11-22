@@ -25,92 +25,113 @@ public class LocationService {
 		this.visitDao = visitDao;
 	}
 
-	public List<Map<String, Double>> getCountriesStatistics(String type) {
-		List<Map<String, Double>> mapList = null;
+	public List<Map<String, Double>> getCountriesStatistics(String statType, String dataType, String fromDate, String toDate) {
+		List<Map<String, Double>> mapList;
 
-		switch (type) {
+		switch (statType) {
 			case "user":
-				mapList = getCountriesForUsers();
+				mapList = getCountriesForUsers(dataType, fromDate, toDate);
 				break;
 			case "visit":
-				mapList = getCountriesForVisits();
+				mapList = getCountriesForVisits(dataType, fromDate, toDate);
 				break;
+			default:
+				mapList = getCountriesForUsers(dataType, fromDate, toDate);
+				mapList.addAll(getCountriesForVisits(dataType, fromDate, toDate));
 		}
 
 		return mapList;
 	}
 
-	private List<Map<String, Double>> getCountriesForUsers() {
+	private List<Map<String, Double>> getCountriesForUsers(String dataType, String fromDate, String toDate) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalUsers = userDao.getTotalUsersAmount();
-		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
+		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsersWithTimePeriod(fromDate, toDate);
 
-		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
-		listMap.add(valueMap);
-		pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
-		listMap.add(percentMap);
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
+			listMap.add(valueMap);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
+			listMap.add(percentMap);
+		}
 
 		return listMap;
 	}
 
-	private List<Map<String, Double>> getCountriesForVisits() {
+	private List<Map<String, Double>> getCountriesForVisits(String dataType, String fromDate, String toDate) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalVisits = visitDao.getTotalVisitsAmount();
-		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByVisits();
+		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByVisitsWithTimePeriod(fromDate, toDate);
 
-		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
-		listMap.add(valueMap);
-		pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
-		listMap.add(percentMap);
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
+			listMap.add(valueMap);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
+			listMap.add(percentMap);
+		}
 
 		return listMap;
 	}
 
-	public List<Map<String, Double>> getCitiesStatistics(String type) {
-		List<Map<String, Double>> mapList = null;
+	public List<Map<String, Double>> getCitiesStatistics(String statType, String dataType, String fromDate, String toDate) {
+		List<Map<String, Double>> mapList;
 
-		switch (type) {
+		switch (statType) {
 			case "user":
-				mapList = getCitiesForUsers();
+				mapList = getCitiesForUsers(dataType, fromDate, toDate);
 				break;
 			case "visit":
-				mapList = getCitiesForVisits();
+				mapList = getCitiesForVisits(dataType, fromDate, toDate);
 				break;
+			default:
+				mapList = getCitiesForUsers(dataType, fromDate, toDate);
+				mapList.addAll(getCitiesForVisits(dataType, fromDate, toDate));
 		}
 
 		return mapList;
 	}
 
-	private List<Map<String, Double>> getCitiesForUsers() {
+	private List<Map<String, Double>> getCitiesForUsers(String dataType, String fromDate, String toDate) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalUsers = userDao.getTotalUsersAmount();
-		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsers();
-
-		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
-		listMap.add(valueMap);
-		pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
-		listMap.add(percentMap);
+		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByUsersWithTimePeriod();
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
+			listMap.add(valueMap);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
+			listMap.add(percentMap);
+		}
 
 		return listMap;
 	}
 
-	private List<Map<String, Double>> getCitiesForVisits() {
+	private List<Map<String, Double>> getCitiesForVisits(String dataType, String fromDate, String toDate) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalVisits = visitDao.getTotalVisitsAmount();
-		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisits();
+		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisitsWithTimePeriod();
 
-		pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
-		listMap.add(valueMap);
-		pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
-		listMap.add(percentMap);
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
+			listMap.add(valueMap);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
+			listMap.add(percentMap);
+		}
 
 		return listMap;
 	}

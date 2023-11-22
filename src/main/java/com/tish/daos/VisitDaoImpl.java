@@ -20,22 +20,22 @@ public class VisitDaoImpl implements VisitDao {
 	}
 
 	@Override
-	public Integer getTotalVisitsAmount() {
+	public Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<Visit> getUniqueVisitsAmount() {
+	public List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getVisitsAmountByPeriod(String fromDate, String toDate) {
+	public List<IntegerStatisticsPair> getVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getTargetVisitsByPeriod(String fromDate, String toDate) {
+	public List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
 		return null;
 	}
 
@@ -50,7 +50,7 @@ public class VisitDaoImpl implements VisitDao {
 	}
 
 	@Override
-	public Integer getCancellationAmount() {
+	public Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 }

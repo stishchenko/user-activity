@@ -20,43 +20,49 @@ public class DeviceService {
 	}
 
 
-	public List<Map<String, Double>> getDevicesByType() {
+	public List<Map<String, Double>> getDevicesByType(String dataType, String fromDate, String toDate) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByType();
-		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByTypeWithTimePeriod(fromDate, toDate);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
 		for (IntegerStatisticsPair pair : pairList) {
-			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+			if (dataType.contains("value"))
+				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
+			if (dataType.contains("percent"))
+				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}
 
 		return mapList;
 	}
 
-	public List<Map<String, Double>> getDevicesByOS() {
+	public List<Map<String, Double>> getDevicesByOS(String dataType, String fromDate, String toDate) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOS();
-		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOSWithTimePeriod(fromDate, toDate);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
 		for (IntegerStatisticsPair pair : pairList) {
-			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+			if (dataType.contains("value"))
+				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
+			if (dataType.contains("percent"))
+				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}
 
 		return mapList;
 	}
 
-	public List<Map<String, Double>> getDevicesByBrowser() {
+	public List<Map<String, Double>> getDevicesByBrowser(String dataType, String fromDate, String toDate) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowser();
-		Integer totalDevicesAmount = deviceDao.getDevicesAmount();
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowserWithTimePeriod(fromDate, toDate);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
 		for (IntegerStatisticsPair pair : pairList) {
-			mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+			if (dataType.contains("value"))
+				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
+			if (dataType.contains("percent"))
+				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
 		}
 
 		return mapList;

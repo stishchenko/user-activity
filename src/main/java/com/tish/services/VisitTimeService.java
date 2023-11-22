@@ -2,7 +2,6 @@ package com.tish.services;
 
 import com.tish.daos.VisitDao;
 import com.tish.models.DoubleStatisticsPair;
-import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,20 +35,24 @@ public class VisitTimeService {
 		return avgMap;
 	}
 
-	public List<Map<String, Double>> getCancellations() {
-		Integer totalVisitsAmount = visitDao.getTotalVisitsAmount();
-		Integer cancellationVisitsAmount = visitDao.getCancellationAmount();
+	public List<Map<String, Double>> getCancellations(String dataType, String fromDate, String toDate) {
+		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
+		Integer cancellationVisitsAmount = visitDao.getCancellationAmountWithTimePeriod(fromDate, toDate);
 		Integer otherVisitsAmount = totalVisitsAmount - cancellationVisitsAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();
-		Map<String, Double> valueMap = new HashMap<>();
-		valueMap.put("cancellationVisits", cancellationVisitsAmount.doubleValue());
-		valueMap.put("otherVisits", otherVisitsAmount.doubleValue());
-		mapList.add(valueMap);
-		Map<String, Double> percentMap = new HashMap<>();
-		percentMap.put("cancellationVisitsPercent", cancellationVisitsAmount / totalVisitsAmount * 100.0);
-		percentMap.put("otherVisitsPercent", otherVisitsAmount / totalVisitsAmount * 100.0);
-		mapList.add(percentMap);
+		if (dataType.contains("value")) {
+			Map<String, Double> valueMap = new HashMap<>();
+			valueMap.put("cancellationVisits", cancellationVisitsAmount.doubleValue());
+			valueMap.put("otherVisits", otherVisitsAmount.doubleValue());
+			mapList.add(valueMap);
+		}
+		if (dataType.contains("percent")) {
+			Map<String, Double> percentMap = new HashMap<>();
+			percentMap.put("cancellationVisitsPercent", cancellationVisitsAmount / totalVisitsAmount * 100.0);
+			percentMap.put("otherVisitsPercent", otherVisitsAmount / totalVisitsAmount * 100.0);
+			mapList.add(percentMap);
+		}
 		return mapList;
 	}
 }

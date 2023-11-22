@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface UserDao {
 
-	Integer getTotalUsersAmount();
+	Integer getTotalUsersAmountWithTimePeriod(String fromDate, String toDate);
 
-	List<Visit> getSingleUsersList();
+	List<Visit> getSingleUsersListWithTimePeriod(String fromDate, String toDate);
 
-	Integer getFirstPageUsersAmount();
+	Integer getFirstPageUsersAmountWithTimePeriod(String fromDate, String toDate);
 }

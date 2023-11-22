@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface LocationDao {
 
-	List<IntegerStatisticsPair> getCountryStatisticsByUsers();
+	List<IntegerStatisticsPair> getCountryStatisticsByUsersWithTimePeriod(String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getCountryStatisticsByVisits();
+	List<IntegerStatisticsPair> getCountryStatisticsByVisitsWithTimePeriod(String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getCityStatisticsByUsers();
+	List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod();
 
-	List<IntegerStatisticsPair> getCityStatisticsByVisits();
+	List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod();
 }

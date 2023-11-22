@@ -3,11 +3,9 @@ package com.tish.controllers;
 import com.tish.services.VisitTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,18 +19,28 @@ public class VisitTimeController {
 		this.visitTimeService = visitTimeService;
 	}
 
-	@GetMapping(path = {"/avg-time-period"})
-	public void getAverageVisitTimeByPeriod(@RequestParam String fromDate, @RequestParam String toDate) {
+	@GetMapping(path = {"", "/"})
+	public String getVisitAimePage(Model model) {
+
+		return "";
+	}
+
+	@PostMapping(path = {"/avg-time-period"})
+	public void getAverageVisitTimeByPeriod(@RequestBody(required = false) String barType,
+											@RequestBody String fromDate, @RequestBody String toDate) {
 		Map<String, Double> map = visitTimeService.getAvgVisitTimeByPeriod(fromDate, toDate);
 	}
 
-	@GetMapping(path = {"/avg-page-period"})
-	public void getAveragePagePeriod(@RequestParam String fromDate, @RequestParam String toDate) {
+	@PostMapping(path = {"/avg-page-period"})
+	public void getAveragePagePeriod(@RequestBody(required = false) String barType,
+									 @RequestBody String fromDate, @RequestBody String toDate) {
 		Map<String, Double> avgMap = visitTimeService.getAvgVisitTimeByPage(fromDate, toDate);
 	}
 
-	@GetMapping(path = {"/cancellation"})
-	public void getCancellationAmount() {
-		List<Map<String, Double>> mapList = visitTimeService.getCancellations();
+	@PostMapping(path = {"/cancellation"})
+	public void getCancellationAmount(@RequestBody(required = false) String graphicType,
+									  @RequestBody String dataType,
+									  @RequestBody String fromDate, @RequestBody String toDate) {
+		List<Map<String, Double>> mapList = visitTimeService.getCancellations(dataType, fromDate, toDate);
 	}
 }

@@ -17,22 +17,22 @@ public class LocationDaoImpl implements LocationDao {
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCountryStatisticsByUsers() {
+	public List<IntegerStatisticsPair> getCountryStatisticsByUsersWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCountryStatisticsByVisits() {
+	public List<IntegerStatisticsPair> getCountryStatisticsByVisitsWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCityStatisticsByUsers() {
+	public List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod() {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCityStatisticsByVisits() {
+	public List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod() {
 		return null;
 	}
 }

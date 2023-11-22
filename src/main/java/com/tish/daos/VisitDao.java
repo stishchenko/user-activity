@@ -8,15 +8,17 @@ import java.util.List;
 
 public interface VisitDao {
 
-	Integer getTotalVisitsAmount();
+	Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate);
 
-	List<Visit> getUniqueVisitsAmount();
+	List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getVisitsAmountByPeriod(String fromDate, String toDate);
+	List<IntegerStatisticsPair> getVisitsAmountByPeriods(String periodType, String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getTargetVisitsByPeriod(String fromDate, String toDate);
+	List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate);
+
 	List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate);
+
 	List<DoubleStatisticsPair> getAvgVisitTimeByPage(String fromDate, String toDate);
 
-	Integer getCancellationAmount();
+	Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate);
 }

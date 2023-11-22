@@ -18,10 +18,10 @@ public class ConversionService {
 		this.visitDao = visitDao;
 	}
 
-	public Map<String, Double> getConversion(String fromDate, String toDate) {
+	public Map<String, Double> getConversion(String periodType, String fromDate, String toDate) {
 		Map<String, Double> map = new HashMap<>();
-		List<IntegerStatisticsPair> totalVisits = visitDao.getVisitsAmountByPeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> targetVisits = visitDao.getTargetVisitsByPeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> totalVisits = visitDao.getVisitsAmountByPeriods(periodType, fromDate, toDate);
+		List<IntegerStatisticsPair> targetVisits = visitDao.getTargetVisitsAmountByPeriods(periodType, fromDate, toDate);
 
 		for (int i = 0; i < targetVisits.size(); i++) {
 			IntegerStatisticsPair pair = targetVisits.get(i);

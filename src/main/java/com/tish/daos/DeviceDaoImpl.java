@@ -17,22 +17,22 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Integer getDevicesAmount() {
+	public Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByType() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByOS() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowser() {
+	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate) {
 		return null;
 	}
 }
