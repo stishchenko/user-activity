@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +21,5 @@ public class Visit {
 	private String page;
 	private Double visit_time;
 	private Integer target_action;
+	private LocalDate creation_date;
 }

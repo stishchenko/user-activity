@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +18,5 @@ public class Device {
 	private String os_platform;
 	private String browser;
 	private WebApp web_app;
+	private LocalDate creation_date;
 }

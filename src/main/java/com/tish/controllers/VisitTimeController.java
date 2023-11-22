@@ -26,21 +26,24 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/avg-time-period"})
-	public void getAverageVisitTimeByPeriod(@RequestBody(required = false) String barType,
-											@RequestBody String fromDate, @RequestBody String toDate) {
+	public Map<String, Double> getAverageVisitTimeByPeriod(@RequestBody(required = false) String barType,
+														   @RequestBody String fromDate, @RequestBody String toDate) {
 		Map<String, Double> map = visitTimeService.getAvgVisitTimeByPeriod(fromDate, toDate);
+		return map;
 	}
 
 	@PostMapping(path = {"/avg-page-period"})
-	public void getAveragePagePeriod(@RequestBody(required = false) String barType,
-									 @RequestBody String fromDate, @RequestBody String toDate) {
+	public Map<String, Double> getAveragePagePeriod(@RequestBody(required = false) String barType,
+													@RequestBody String fromDate, @RequestBody String toDate) {
 		Map<String, Double> avgMap = visitTimeService.getAvgVisitTimeByPage(fromDate, toDate);
+		return avgMap;
 	}
 
 	@PostMapping(path = {"/cancellation"})
-	public void getCancellationAmount(@RequestBody(required = false) String graphicType,
-									  @RequestBody String dataType,
-									  @RequestBody String fromDate, @RequestBody String toDate) {
+	public List<Map<String, Double>> getCancellationAmount(@RequestBody(required = false) String graphicType,
+														   @RequestBody String dataType,
+														   @RequestBody String fromDate, @RequestBody String toDate) {
 		List<Map<String, Double>> mapList = visitTimeService.getCancellations(dataType, fromDate, toDate);
+		return mapList;
 	}
 }
