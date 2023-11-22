@@ -1,7 +1,16 @@
 package com.tish.mappers;
 
+import com.tish.models.IntegerStatisticsPair;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
-public class LocationMapper {
+public interface LocationMapper {
+
+	List<IntegerStatisticsPair> getCountryStatisticsByUsers(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	List<IntegerStatisticsPair>  getCountryStatisticsByVisits(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	List<IntegerStatisticsPair> getCityStatisticsByUsers(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	List<IntegerStatisticsPair> getCityStatisticsByVisits(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 }

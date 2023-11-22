@@ -18,21 +18,21 @@ public class DeviceDaoImpl implements DeviceDao {
 
 	@Override
 	public Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return deviceMapper.getDevicesAmount(fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return deviceMapper.getDeviceStatisticsByType(fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return deviceMapper.getDeviceStatisticsByOS(fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return deviceMapper.getDeviceStatisticsByBrowser(fromDate, toDate);
 	}
 }

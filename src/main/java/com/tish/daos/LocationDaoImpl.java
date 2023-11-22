@@ -18,21 +18,21 @@ public class LocationDaoImpl implements LocationDao {
 
 	@Override
 	public List<IntegerStatisticsPair> getCountryStatisticsByUsersWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return locationMapper.getCountryStatisticsByUsers(fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getCountryStatisticsByVisitsWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return locationMapper.getCountryStatisticsByVisits(fromDate, toDate);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod() {
-		return null;
+	public List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod(String fromDate, String toDate) {
+		return locationMapper.getCityStatisticsByUsers(fromDate, toDate);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod() {
-		return null;
+	public List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod(String fromDate, String toDate) {
+		return locationMapper.getCityStatisticsByVisits(fromDate, toDate);
 	}
 }

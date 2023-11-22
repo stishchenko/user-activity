@@ -21,36 +21,36 @@ public class VisitDaoImpl implements VisitDao {
 
 	@Override
 	public Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return visitMapper.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
 	}
 
 	@Override
 	public List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return visitMapper.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
-		return null;
+		return visitMapper.getVisitsAmountByPeriods(periodType, fromDate, toDate);
 	}
 
 	@Override
 	public List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
-		return null;
+		return visitMapper.getTargetVisitsAmountByPeriods(periodType, fromDate, toDate);
 	}
 
 	@Override
 	public List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate) {
-		return null;
+		return visitMapper.getAvgVisitTimeByPeriod(fromDate, toDate);
 	}
 
 	@Override
 	public List<DoubleStatisticsPair> getAvgVisitTimeByPage(String fromDate, String toDate) {
-		return null;
+		return visitMapper.getAvgVisitTimeByPage(fromDate, toDate);
 	}
 
 	@Override
 	public Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate) {
-		return null;
+		return visitMapper.getCancellationAmountWithTimePeriod(fromDate, toDate);
 	}
 }

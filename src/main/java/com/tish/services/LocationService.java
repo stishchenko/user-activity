@@ -104,7 +104,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByUsersWithTimePeriod();
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByUsersWithTimePeriod(fromDate, toDate);
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 			listMap.add(valueMap);
@@ -122,7 +122,7 @@ public class LocationService {
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
 		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisitsWithTimePeriod();
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisitsWithTimePeriod(fromDate, toDate);
 
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));

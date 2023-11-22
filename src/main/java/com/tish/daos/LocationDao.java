@@ -10,7 +10,7 @@ public interface LocationDao {
 
 	List<IntegerStatisticsPair> getCountryStatisticsByVisitsWithTimePeriod(String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod();
+	List<IntegerStatisticsPair> getCityStatisticsByUsersWithTimePeriod(String fromDate, String toDate);
 
-	List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod();
+	List<IntegerStatisticsPair> getCityStatisticsByVisitsWithTimePeriod(String fromDate, String toDate);
 }
