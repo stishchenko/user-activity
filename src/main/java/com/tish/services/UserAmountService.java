@@ -18,9 +18,9 @@ public class UserAmountService {
 		this.userDao = userDao;
 	}
 
-	public List<Map<String, Double>> getUsersAmountAsSingleAndRepeat(String dataType, String fromDate, String toDate) {
-		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
-		Integer singleUsersAmount = userDao.getSingleUsersListWithTimePeriod(fromDate, toDate).size();
+	public List<Map<String, Double>> getUsersAmountAsSingleAndRepeat(String dataType, String fromDate, String toDate, String webApp) {
+		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
+		Integer singleUsersAmount = userDao.getSingleUsersListWithTimePeriod(fromDate, toDate, webApp).size();
 		Integer repeatUsersAmount = totalUsersAmount - singleUsersAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();
@@ -39,9 +39,9 @@ public class UserAmountService {
 		return mapList;
 	}
 
-	public List<Map<String, Double>> getUsersAmountByVisitTimes(String dataType, String fromDate, String toDate) {
-		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
-		Integer firstPageUsersAmount = userDao.getFirstPageUsersAmountWithTimePeriod(fromDate, toDate);
+	public List<Map<String, Double>> getUsersAmountByVisitTimes(String dataType, String fromDate, String toDate, String webApp) {
+		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
+		Integer firstPageUsersAmount = userDao.getFirstPageUsersAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer severalPageUsersAmount = totalUsersAmount - firstPageUsersAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();

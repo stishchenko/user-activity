@@ -34,10 +34,11 @@ public class LocationController {
 	public Map<Object, Object> getCountries(@RequestBody(required = false) String graphicType,
 											@RequestBody String statisticsType,
 											@RequestBody String dataType,
+											@RequestBody String webApp,
 											@RequestBody String fromDate, @RequestBody String toDate) {
 		// dataType  = value, percent or value+percent
-		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", dataType, fromDate, toDate);
-		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", dataType, fromDate, toDate);
+		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", dataType, fromDate, toDate, webApp);
+		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", dataType, fromDate, toDate, webApp);
 		Map<Object, Object> allMap = new HashMap<>();
 		allMap.put("users", userMapList);
 		allMap.put("visits", visitMapList);
@@ -49,10 +50,11 @@ public class LocationController {
 	public Map<Object, Object> getCities(@RequestBody(required = false) String graphicType,
 										 @RequestBody String statisticsType,
 										 @RequestBody String dataType,
+										 @RequestBody String webApp,
 										 @RequestBody String fromDate, @RequestBody String toDate) {
 		// dataType  = value, percent or value+percent
-		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", dataType, fromDate, toDate);
-		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", dataType, fromDate, toDate);
+		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", dataType, fromDate, toDate, webApp);
+		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", dataType, fromDate, toDate, webApp);
 
 		Map<Object, Object> allMap = new HashMap<>();
 		allMap.put("users", userMapList);

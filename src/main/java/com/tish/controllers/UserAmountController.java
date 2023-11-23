@@ -31,16 +31,18 @@ public class UserAmountController {
 	@PostMapping(path = {"/ratio"})
 	public List<Map<String, Double>> getUsersAmount(@RequestBody(required = false) String graphicType,
 													@RequestBody String dataType,
+													@RequestBody String webApp,
 													@RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> mapList = userAmountService.getUsersAmountAsSingleAndRepeat(dataType, fromDate, toDate);
+		List<Map<String, Double>> mapList = userAmountService.getUsersAmountAsSingleAndRepeat(dataType, fromDate, toDate, webApp);
 		return mapList;
 	}
 
 	@PostMapping(path = {"/user-page-visit"})
 	public List<Map<String, Double>> getUserAmountByPageVisits(@RequestBody(required = false) String graphicType,
 															   @RequestBody String dataType,
+															   @RequestBody String webApp,
 															   @RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> mapList = userAmountService.getUsersAmountByVisitTimes(dataType, fromDate, toDate);
+		List<Map<String, Double>> mapList = userAmountService.getUsersAmountByVisitTimes(dataType, fromDate, toDate, webApp);
 		return mapList;
 	}
 }

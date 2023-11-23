@@ -20,12 +20,12 @@ public class DeviceService {
 	}
 
 
-	public List<Map<String, Double>> getDevicesByType(String dataType, String fromDate, String toDate) {
+	public List<Map<String, Double>> getDevicesByType(String dataType, String fromDate, String toDate, String webApp) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByTypeWithTimePeriod(fromDate, toDate);
-		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByTypeWithTimePeriod(fromDate, toDate, webApp);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
 		for (IntegerStatisticsPair pair : pairList) {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
@@ -36,12 +36,12 @@ public class DeviceService {
 		return mapList;
 	}
 
-	public List<Map<String, Double>> getDevicesByOS(String dataType, String fromDate, String toDate) {
+	public List<Map<String, Double>> getDevicesByOS(String dataType, String fromDate, String toDate, String webApp) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOSWithTimePeriod(fromDate, toDate);
-		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOSWithTimePeriod(fromDate, toDate, webApp);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
 		for (IntegerStatisticsPair pair : pairList) {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
@@ -52,12 +52,12 @@ public class DeviceService {
 		return mapList;
 	}
 
-	public List<Map<String, Double>> getDevicesByBrowser(String dataType, String fromDate, String toDate) {
+	public List<Map<String, Double>> getDevicesByBrowser(String dataType, String fromDate, String toDate, String webApp) {
 		List<Map<String, Double>> mapList = new ArrayList<>();
 		mapList.add(new HashMap<>());
 		mapList.add(new HashMap<>());
-		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowserWithTimePeriod(fromDate, toDate);
-		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate);
+		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowserWithTimePeriod(fromDate, toDate, webApp);
+		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
 		for (IntegerStatisticsPair pair : pairList) {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());

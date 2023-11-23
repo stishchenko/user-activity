@@ -20,37 +20,37 @@ public class VisitDaoImpl implements VisitDao {
 	}
 
 	@Override
-	public Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate) {
-		return visitMapper.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
+	public Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return visitMapper.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate) {
-		return visitMapper.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate);
+	public List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return visitMapper.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
-		return visitMapper.getVisitsAmountByPeriods(periodType, fromDate, toDate);
+	public List<IntegerStatisticsPair> getVisitsAmountByPeriods(String periodType, String fromDate, String toDate, String webApp) {
+		return visitMapper.getVisitsAmountByPeriods(periodType, fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate) {
-		return visitMapper.getTargetVisitsAmountByPeriods(periodType, fromDate, toDate);
+	public List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate, String webApp) {
+		return visitMapper.getTargetVisitsAmountByPeriods(periodType, fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate) {
-		return visitMapper.getAvgVisitTimeByPeriod(fromDate, toDate);
+	public List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp) {
+		return visitMapper.getAvgVisitTimeByPeriod(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<DoubleStatisticsPair> getAvgVisitTimeByPage(String fromDate, String toDate) {
-		return visitMapper.getAvgVisitTimeByPage(fromDate, toDate);
+	public List<DoubleStatisticsPair> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp) {
+		return visitMapper.getAvgVisitTimeByPage(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate) {
-		return visitMapper.getCancellationAmountWithTimePeriod(fromDate, toDate);
+	public Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return visitMapper.getCancellationAmountWithTimePeriod(fromDate, toDate, webApp);
 	}
 }

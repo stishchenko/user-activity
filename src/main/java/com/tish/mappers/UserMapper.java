@@ -9,9 +9,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-	Integer getTotalUsersAmount(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	Integer getTotalUsersAmount(@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 
-	List<Visit> getSingleUsersList(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	List<Visit> getSingleUsersList(@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 
-	Integer getFirstPageUsersAmount(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+	Integer getFirstPageUsersAmount(@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 }

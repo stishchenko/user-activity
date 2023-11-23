@@ -25,30 +25,30 @@ public class LocationService {
 		this.visitDao = visitDao;
 	}
 
-	public List<Map<String, Double>> getCountriesStatistics(String statType, String dataType, String fromDate, String toDate) {
+	public List<Map<String, Double>> getCountriesStatistics(String statType, String dataType, String fromDate, String toDate, String webApp) {
 		List<Map<String, Double>> mapList;
 
 		switch (statType) {
 			case "user":
-				mapList = getCountriesForUsers(dataType, fromDate, toDate);
+				mapList = getCountriesForUsers(dataType, fromDate, toDate, webApp);
 				break;
 			case "visit":
-				mapList = getCountriesForVisits(dataType, fromDate, toDate);
+				mapList = getCountriesForVisits(dataType, fromDate, toDate, webApp);
 				break;
 			default:
-				mapList = getCountriesForUsers(dataType, fromDate, toDate);
-				mapList.addAll(getCountriesForVisits(dataType, fromDate, toDate));
+				mapList = getCountriesForUsers(dataType, fromDate, toDate, webApp);
+				mapList.addAll(getCountriesForVisits(dataType, fromDate, toDate, webApp));
 		}
 
 		return mapList;
 	}
 
-	private List<Map<String, Double>> getCountriesForUsers(String dataType, String fromDate, String toDate) {
+	private List<Map<String, Double>> getCountriesForUsers(String dataType, String fromDate, String toDate, String webApp) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsersWithTimePeriod(fromDate, toDate);
+		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByUsersWithTimePeriod(fromDate, toDate, webApp);
 
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
@@ -62,12 +62,12 @@ public class LocationService {
 		return listMap;
 	}
 
-	private List<Map<String, Double>> getCountriesForVisits(String dataType, String fromDate, String toDate) {
+	private List<Map<String, Double>> getCountriesForVisits(String dataType, String fromDate, String toDate, String webApp) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByVisitsWithTimePeriod(fromDate, toDate);
+		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
+		List<IntegerStatisticsPair> pairList = locationDao.getCountryStatisticsByVisitsWithTimePeriod(fromDate, toDate, webApp);
 
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
@@ -81,30 +81,30 @@ public class LocationService {
 		return listMap;
 	}
 
-	public List<Map<String, Double>> getCitiesStatistics(String statType, String dataType, String fromDate, String toDate) {
+	public List<Map<String, Double>> getCitiesStatistics(String statType, String dataType, String fromDate, String toDate, String webApp) {
 		List<Map<String, Double>> mapList;
 
 		switch (statType) {
 			case "user":
-				mapList = getCitiesForUsers(dataType, fromDate, toDate);
+				mapList = getCitiesForUsers(dataType, fromDate, toDate, webApp);
 				break;
 			case "visit":
-				mapList = getCitiesForVisits(dataType, fromDate, toDate);
+				mapList = getCitiesForVisits(dataType, fromDate, toDate, webApp);
 				break;
 			default:
-				mapList = getCitiesForUsers(dataType, fromDate, toDate);
-				mapList.addAll(getCitiesForVisits(dataType, fromDate, toDate));
+				mapList = getCitiesForUsers(dataType, fromDate, toDate, webApp);
+				mapList.addAll(getCitiesForVisits(dataType, fromDate, toDate, webApp));
 		}
 
 		return mapList;
 	}
 
-	private List<Map<String, Double>> getCitiesForUsers(String dataType, String fromDate, String toDate) {
+	private List<Map<String, Double>> getCitiesForUsers(String dataType, String fromDate, String toDate, String webApp) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByUsersWithTimePeriod(fromDate, toDate);
+		Integer totalUsers = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByUsersWithTimePeriod(fromDate, toDate, webApp);
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));
 			listMap.add(valueMap);
@@ -117,12 +117,12 @@ public class LocationService {
 		return listMap;
 	}
 
-	private List<Map<String, Double>> getCitiesForVisits(String dataType, String fromDate, String toDate) {
+	private List<Map<String, Double>> getCitiesForVisits(String dataType, String fromDate, String toDate, String webApp) {
 		Map<String, Double> valueMap = new HashMap<>();
 		Map<String, Double> percentMap = new HashMap<>();
 		List<Map<String, Double>> listMap = new ArrayList<>();
-		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
-		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisitsWithTimePeriod(fromDate, toDate);
+		Integer totalVisits = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
+		List<IntegerStatisticsPair> pairList = locationDao.getCityStatisticsByVisitsWithTimePeriod(fromDate, toDate, webApp);
 
 		if (dataType.contains("value")) {
 			pairList.forEach(pair -> valueMap.put(pair.getItem(), pair.getValue().doubleValue()));

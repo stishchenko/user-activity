@@ -18,17 +18,17 @@ public class UserDaoImpl implements UserDao {
 
 
 	@Override
-	public Integer getTotalUsersAmountWithTimePeriod(String fromDate, String toDate) {
-		return userMapper.getTotalUsersAmount(fromDate, toDate);
+	public Integer getTotalUsersAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return userMapper.getTotalUsersAmount(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<Visit> getSingleUsersListWithTimePeriod(String fromDate, String toDate) {
-		return userMapper.getSingleUsersList(fromDate, toDate);
+	public List<Visit> getSingleUsersListWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return userMapper.getSingleUsersList(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public Integer getFirstPageUsersAmountWithTimePeriod(String fromDate, String toDate) {
-		return userMapper.getFirstPageUsersAmount(fromDate, toDate);
+	public Integer getFirstPageUsersAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return userMapper.getFirstPageUsersAmount(fromDate, toDate, webApp);
 	}
 }

@@ -30,9 +30,10 @@ public class VisitAmountController {
 
 	@PostMapping(path = {"/amount"})
 	public List<Map<String, Double>> getTotalVisits(@RequestBody(required = false) String graphicType,
+													@RequestBody String webApp,
 													@RequestBody String dataType,
 													@RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(dataType, fromDate, toDate);
+		List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(dataType, fromDate, toDate, webApp);
 		return mapList;
 	}
 }

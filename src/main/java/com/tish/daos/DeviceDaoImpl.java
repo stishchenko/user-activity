@@ -17,22 +17,22 @@ public class DeviceDaoImpl implements DeviceDao {
 	}
 
 	@Override
-	public Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate) {
-		return deviceMapper.getDevicesAmount(fromDate, toDate);
+	public Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return deviceMapper.getDevicesAmount(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate) {
-		return deviceMapper.getDeviceStatisticsByType(fromDate, toDate);
+	public List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return deviceMapper.getDeviceStatisticsByType(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate) {
-		return deviceMapper.getDeviceStatisticsByOS(fromDate, toDate);
+	public List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return deviceMapper.getDeviceStatisticsByOS(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate) {
-		return deviceMapper.getDeviceStatisticsByBrowser(fromDate, toDate);
+	public List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return deviceMapper.getDeviceStatisticsByBrowser(fromDate, toDate, webApp);
 	}
 }

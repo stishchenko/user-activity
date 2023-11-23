@@ -19,25 +19,25 @@ public class VisitTimeService {
 		this.visitDao = visitDao;
 	}
 
-	public Map<String, Double> getAvgVisitTimeByPeriod(String fromDate, String toDate) {
+	public Map<String, Double> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp) {
 		Map<String, Double> avgMap = new HashMap<>();
-		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPeriod(fromDate, toDate);
+		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPeriod(fromDate, toDate, webApp);
 		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), pair.getValue()));
 
 		return avgMap;
 	}
 
-	public Map<String, Double> getAvgVisitTimeByPage(String fromDate, String toDate) {
+	public Map<String, Double> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp) {
 		Map<String, Double> avgMap = new HashMap<>();
-		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPage(fromDate, toDate);
+		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPage(fromDate, toDate, webApp);
 		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), pair.getValue()));
 
 		return avgMap;
 	}
 
-	public List<Map<String, Double>> getCancellations(String dataType, String fromDate, String toDate) {
-		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate);
-		Integer cancellationVisitsAmount = visitDao.getCancellationAmountWithTimePeriod(fromDate, toDate);
+	public List<Map<String, Double>> getCancellations(String dataType, String fromDate, String toDate, String webApp) {
+		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
+		Integer cancellationVisitsAmount = visitDao.getCancellationAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer otherVisitsAmount = totalVisitsAmount - cancellationVisitsAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();

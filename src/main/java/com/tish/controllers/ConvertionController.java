@@ -29,10 +29,11 @@ public class ConvertionController {
 	}
 
 	@PostMapping(path = {"", "/"})
-	public Map<String, Double> getConvertionByPeriod(@RequestBody String barType, @RequestBody String periodType,
+	public Map<String, Double> getConvertionByPeriod(@RequestBody(required = false) String barType, @RequestBody String periodType,
+													 @RequestBody String webApp,
 													 @RequestBody(required = false) String fromDate,
 													 @RequestBody(required = false) String toDate) {
-		Map<String, Double> map = conversionService.getConversion(periodType, fromDate, toDate);
+		Map<String, Double> map = conversionService.getConversion(periodType, fromDate, toDate, webApp);
 		return map;
 	}
 }

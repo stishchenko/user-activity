@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface DeviceDao {
 
-	Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate);
+	Integer getDevicesAmountWithTimePeriod(String fromDate, String toDate, String webApp);
 
-	List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate);
+	List<IntegerStatisticsPair> getDeviceStatisticsByTypeWithTimePeriod(String fromDate, String toDate, String webApp);
 
-	List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate);
+	List<IntegerStatisticsPair> getDeviceStatisticsByOSWithTimePeriod(String fromDate, String toDate, String webApp);
 
-	List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate);
+	List<IntegerStatisticsPair> getDeviceStatisticsByBrowserWithTimePeriod(String fromDate, String toDate, String webApp);
 
 }
