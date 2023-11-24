@@ -3,7 +3,6 @@ package com.tish.daos;
 import com.tish.mappers.VisitMapper;
 import com.tish.models.DoubleStatisticsPair;
 import com.tish.models.IntegerStatisticsPair;
-import com.tish.models.Visit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,12 +20,12 @@ public class VisitDaoImpl implements VisitDao {
 
 	@Override
 	public Integer getTotalVisitsAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
-		return visitMapper.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
+		return visitMapper.getTotalVisitsAmount(fromDate, toDate, webApp);
 	}
 
 	@Override
-	public List<Visit> getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
-		return visitMapper.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
+	public Integer getUniqueVisitsAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
+		return visitMapper.getUniqueVisitsAmount(fromDate, toDate, webApp);
 	}
 
 	@Override
@@ -51,6 +50,6 @@ public class VisitDaoImpl implements VisitDao {
 
 	@Override
 	public Integer getCancellationAmountWithTimePeriod(String fromDate, String toDate, String webApp) {
-		return visitMapper.getCancellationAmountWithTimePeriod(fromDate, toDate, webApp);
+		return visitMapper.getCancellationAmount(fromDate, toDate, webApp);
 	}
 }

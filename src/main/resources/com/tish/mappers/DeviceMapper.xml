@@ -2,15 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="team.asd.mapper.DeviceMapper">
+<mapper namespace="com.tish.mappers.DeviceMapper">
 
-	<resultMap id="userMap" type="com.tish.models.Device">
+	<resultMap id="deviceMap" type="com.tish.models.Device">
 		<id property="device_id" column="device_id" jdbcType="VARCHAR"/>
 		<result property="type" column="type" jdbcType="VARCHAR"/>
 		<result property="os_platform" column="os_platform" jdbcType="VARCHAR"/>
 		<result property="browser" column="browser" jdbcType="VARCHAR"/>
 		<result property="web_app" column="web_app" jdbcType="VARCHAR"
 				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+		<result property="creation_date" column="creation_date" jdbcType="VARCHAR"/>
 	</resultMap>
+
+	<resultMap id="intStatPairMap" type="com.tish.models.IntegerStatisticsPair">
+		<result property="item" column="item" jdbcType="VARCHAR"/>
+		<result property="value" column="value" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<select id="getDevicesAmount" parameterType="map" resultType="integer">
+		select count(*)
+		from devices
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null"> and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null"> and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+	</select>
+
+	<select id="getDeviceStatisticsByType" parameterType="map" resultMap="intStatPairMap">
+		select type as item, count(*) as value
+		from devices
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null"> and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null"> and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by type
+	</select>
+
+	<select id="getDeviceStatisticsByOS" parameterType="map" resultMap="intStatPairMap">
+		select os_platform as item, count(*) as value
+		from devices
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null"> and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null"> and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by os_platform
+	</select>
+
+	<select id="getDeviceStatisticsByBrowser" parameterType="map" resultMap="intStatPairMap">
+		select browser as item, count(*) as value
+		from devices
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null"> and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null"> and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by browser
+	</select>
 
 </mapper>

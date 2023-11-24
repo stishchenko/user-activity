@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="team.asd.mapper.VisitMapper">
+<mapper namespace="com.tish.mappers.VisitMapper">
 
-	<resultMap id="userMap" type="com.tish.models.Visit">
+	<resultMap id="visitMap" type="com.tish.models.Visit">
 		<id property="id" column="id" jdbcType="INTEGER"/>
 		<result property="user_id" column="user_id" jdbcType="VARCHAR"/>
 		<result property="device_id" column="device_id" jdbcType="VARCHAR"/>
@@ -13,6 +13,129 @@
 				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
 		<result property="page" column="page" jdbcType="VARCHAR"/>
 		<result property="visit_time" column="visit_time" jdbcType="VARCHAR"/>
+		<result property="creation_date" column="creation_date" jdbcType="VARCHAR"/>
 	</resultMap>
+
+	<resultMap id="intStatPairMap" type="com.tish.models.IntegerStatisticsPair">
+		<result property="item" column="item" jdbcType="VARCHAR"/>
+		<result property="value" column="value" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<resultMap id="doubleStatPairMap" type="com.tish.models.DoubleStatisticsPair">
+		<result property="item" column="item" jdbcType="VARCHAR"/>
+		<result property="value" column="value" jdbcType="DOUBLE"/>
+	</resultMap>
+
+	<select id="getTotalVisitsAmount" parameterType="map" resultType="integer">
+		select count(*)
+		from visits
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+	</select>
+
+	<select id="getUniqueVisitsAmount" parameterType="map" resultType="integer">
+		select count(*)
+		from visits
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by user_id, device_id, location_id, visits.page, creation_date
+	</select>
+
+	<select id="getVisitsAmountByPeriods" parameterType="map" resultMap="intStatPairMap">
+		<choose>
+			<when test="periodType == 'year'">select year(creation_date) as item, count(*)
+				as value
+				from visits
+				<where>
+					web_app = #{webApp}
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</when>
+			<otherwise>
+				select concat(monthname(creation_date), ', ', year(creation_date)) as item, count(*) as value
+				from visits
+				<where>
+					web_app = #{webApp}
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getTargetVisitsAmountByPeriods" parameterType="map" resultMap="intStatPairMap">
+		<choose>
+			<when test="periodType == 'year'">
+				select year(creation_date) as item, count(*)
+				as value
+				from visits
+				<where>
+					web_app = #{webApp} and target_action = 1
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</when>
+			<otherwise>
+				select concat(monthname(creation_date), ', ', year(creation_date)) as item, count(*) as value
+				from visits
+				<where>
+					web_app = #{webApp} and target_action = 1
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getAvgVisitTimeByPeriod" parameterType="map" resultMap="doubleStatPairMap">
+		select concat(monthname(creation_date), ', ', year(creation_date)) as item, avg(visit_time) as value
+		from visits
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by item
+	</select>
+
+	<select id="getAvgVisitTimeByPage" parameterType="map" resultMap="doubleStatPairMap">
+		select page as item, avg(visit_time) as value
+		from visits
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by visits.page
+	</select>
+
+
+	<select id="getCancellationAmount" parameterType="map" resultType="integer">
+		select count(user_id)
+		from
+		(select user_id, creation_date, sum(up_total_time) as u_total_time
+		from
+		(select user_id, creation_date, page, sum(visit_time) as up_total_time
+		from visits
+		<where>
+			web_app = #{webApp}
+			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by user_id, creation_date, visits.page) as up_visits
+		group by user_id, creation_date) as visit_times
+		where u_total_time <![CDATA[<]]> 15.0
+	</select>
 
 </mapper>

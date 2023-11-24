@@ -2,12 +2,67 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="team.asd.mapper.LocationMapper">
+<mapper namespace="com.tish.mappers.LocationMapper">
 
 	<resultMap id="locationMap" type="com.tish.models.Location">
 		<id property="id" column="id" jdbcType="INTEGER"/>
 		<result property="country" column="country" jdbcType="VARCHAR"/>
 		<result property="city" column="city" jdbcType="VARCHAR"/>
+		<result property="creation_date" column="creation_date" jdbcType="VARCHAR"/>
 	</resultMap>
+
+	<resultMap id="intStatPairMap" type="com.tish.models.IntegerStatisticsPair">
+		<result property="item" column="item" jdbcType="VARCHAR"/>
+		<result property="value" column="value" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<select id="getCountryStatisticsByUsers" parameterType="map" resultMap="intStatPairMap">
+		select l.country as item, count(distinct v.user_id) as value
+		from visits v
+		inner join locations l on l.id = v.location_id
+		<where>
+			v.web_app = #{webApp}
+			<if test="fromDate != null">and v.creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and v.creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by l.country
+	</select>
+
+	<select id="getCountryStatisticsByVisits" parameterType="map" resultMap="intStatPairMap">
+		select l.country as item, count(*) as value
+		from visits v
+		inner join locations l on l.id = v.location_id
+		<where>
+			v.web_app = #{webApp}
+			<if test="fromDate != null">and v.creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and v.creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by l.country
+	</select>
+
+	<select id="getCityStatisticsByUsers" parameterType="map" resultMap="intStatPairMap">
+		select l.city as item, count(distinct v.user_id) as value
+		from visits v
+		inner join locations l on l.id = v.location_id
+		<where>
+			v.web_app = #{webApp}
+			<if test="fromDate != null">and v.creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and v.creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by l.city
+	</select>
+
+	<select id="getCityStatisticsByVisits" parameterType="map" resultMap="intStatPairMap">
+		select l.city as item, count(*) as value
+		from visits v
+		inner join locations l on l.id = v.location_id
+		<where>
+			v.web_app = #{webApp}
+			<if test="fromDate != null">and v.creation_date <![CDATA[>=]]> #{fromDate}</if>
+			<if test="toDate != null">and v.creation_date <![CDATA[<=]]> #{toDate}</if>
+		</where>
+		group by l.city
+	</select>
+
 
 </mapper>

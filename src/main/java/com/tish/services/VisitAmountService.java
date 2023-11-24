@@ -20,7 +20,7 @@ public class VisitAmountService {
 
 	public List<Map<String, Double>> getVisitAmount(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
-		Integer uniqueVisitsAmount = visitDao.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate, webApp).size();
+		Integer uniqueVisitsAmount = visitDao.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer repeatVisitsAmount = totalVisitsAmount - uniqueVisitsAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();

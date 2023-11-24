@@ -20,7 +20,7 @@ public class UserAmountService {
 
 	public List<Map<String, Double>> getUsersAmountAsSingleAndRepeat(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
-		Integer singleUsersAmount = userDao.getSingleUsersListWithTimePeriod(fromDate, toDate, webApp).size();
+		Integer singleUsersAmount = userDao.getSingleUsersListWithTimePeriod(fromDate, toDate, webApp);
 		Integer repeatUsersAmount = totalUsersAmount - singleUsersAmount;
 
 		List<Map<String, Double>> mapList = new ArrayList<>();

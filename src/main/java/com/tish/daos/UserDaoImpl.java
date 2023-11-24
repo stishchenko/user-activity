@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<Visit> getSingleUsersListWithTimePeriod(String fromDate, String toDate, String webApp) {
+	public Integer getSingleUsersListWithTimePeriod(String fromDate, String toDate, String webApp) {
 		return userMapper.getSingleUsersList(fromDate, toDate, webApp);
 	}
 
