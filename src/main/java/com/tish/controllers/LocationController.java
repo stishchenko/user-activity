@@ -4,16 +4,14 @@ import com.tish.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+//@Controller
+@RestController
 @RequestMapping(path = "/location")
 public class LocationController {
 
@@ -31,14 +29,15 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/country"})
-	public Map<Object, Object> getCountries(@RequestBody(required = false) String graphicType,
+	public Map<Object, Object> getCountries(/*@RequestBody(required = false) String graphicType,
 											@RequestBody String statisticsType,
 											@RequestBody String dataType,
 											@RequestBody String webApp,
-											@RequestBody String fromDate, @RequestBody String toDate) {
+											@RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
 		// dataType  = value, percent or value+percent
-		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", dataType, fromDate, toDate, webApp);
-		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", dataType, fromDate, toDate, webApp);
+		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
+		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		Map<Object, Object> allMap = new HashMap<>();
 		allMap.put("users", userMapList);
 		allMap.put("visits", visitMapList);
@@ -47,14 +46,15 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/city"})
-	public Map<Object, Object> getCities(@RequestBody(required = false) String graphicType,
+	public Map<Object, Object> getCities(/*@RequestBody(required = false) String graphicType,
 										 @RequestBody String statisticsType,
 										 @RequestBody String dataType,
 										 @RequestBody String webApp,
-										 @RequestBody String fromDate, @RequestBody String toDate) {
+										 @RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
 		// dataType  = value, percent or value+percent
-		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", dataType, fromDate, toDate, webApp);
-		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", dataType, fromDate, toDate, webApp);
+		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
+		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 
 		Map<Object, Object> allMap = new HashMap<>();
 		allMap.put("users", userMapList);

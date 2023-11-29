@@ -49,7 +49,7 @@
 			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
 		</where>
 		group by visits.page, user_id ) as v
-		where v.page = '1' and v.cur_visits = 1
+		where v.page = 'First' and v.cur_visits = 1
 	</select>
 
 </mapper>
