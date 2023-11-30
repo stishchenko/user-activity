@@ -4,15 +4,13 @@ import com.tish.services.VisitAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@Controller
+//@Controller
+@RestController
 @RequestMapping(path = "/visits")
 public class VisitAmountController {
 
@@ -29,11 +27,12 @@ public class VisitAmountController {
 	}
 
 	@PostMapping(path = {"/amount"})
-	public List<Map<String, Double>> getTotalVisits(@RequestBody(required = false) String graphicType,
+	public List<Map<String, Double>> getTotalVisits(/*@RequestBody(required = false) String graphicType,
 													@RequestBody String webApp,
 													@RequestBody String dataType,
-													@RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(dataType, fromDate, toDate, webApp);
+													@RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
+		List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return mapList;
 	}
 }

@@ -4,6 +4,8 @@ import com.tish.daos.VisitDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,8 @@ public class VisitAmountService {
 		}
 		if (dataType.contains("percent")) {
 			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("uniqueVisitsPercent", uniqueVisitsAmount / totalVisitsAmount * 100.0);
-			percentMap.put("repeatVisitsPercent", repeatVisitsAmount / totalVisitsAmount * 100.0);
+			percentMap.put("uniqueVisitsPercent", BigDecimal.valueOf(uniqueVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentMap.put("repeatVisitsPercent", BigDecimal.valueOf(repeatVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 			mapList.add(percentMap);
 		}
 		return mapList;

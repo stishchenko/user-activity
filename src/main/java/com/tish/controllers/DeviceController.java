@@ -4,15 +4,13 @@ import com.tish.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@Controller
+//@Controller
+@RestController
 @RequestMapping(path = "/devices")
 public class DeviceController {
 
@@ -30,29 +28,32 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/type"})
-	public List<Map<String, Double>> getTypes(@RequestBody(required = false) String graphicType,
+	public List<Map<String, Double>> getTypes(/*@RequestBody(required = false) String graphicType,
 											  @RequestBody String dataType,
 											  @RequestBody String webApp,
-											  @RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> deviceTypeMapList = deviceService.getDevicesByType(dataType, fromDate, toDate, webApp);
+											  @RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
+		List<Map<String, Double>> deviceTypeMapList = deviceService.getDevicesByType(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceTypeMapList;
 	}
 
 	@PostMapping(path = {"/os"})
-	public List<Map<String, Double>> getOS(@RequestBody(required = false) String graphicType,
+	public List<Map<String, Double>> getOS(/*@RequestBody(required = false) String graphicType,
 										   @RequestBody String dataType,
 										   @RequestBody String webApp,
-										   @RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> deviceOSMapList = deviceService.getDevicesByOS(dataType, fromDate, toDate, webApp);
+										   @RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
+		List<Map<String, Double>> deviceOSMapList = deviceService.getDevicesByOS(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceOSMapList;
 	}
 
 	@PostMapping(path = {"/browser"})
-	public List<Map<String, Double>> getBrowsers(@RequestBody(required = false) String graphicType,
+	public List<Map<String, Double>> getBrowsers(/*@RequestBody(required = false) String graphicType,
 												 @RequestBody String dataType,
 												 @RequestBody String webApp,
-												 @RequestBody String fromDate, @RequestBody String toDate) {
-		List<Map<String, Double>> deviceBrowserMapList = deviceService.getDevicesByBrowser(dataType, fromDate, toDate, webApp);
+												 @RequestBody String fromDate, @RequestBody String toDate*/
+			@RequestBody Map<String, String> params) {
+		List<Map<String, Double>> deviceBrowserMapList = deviceService.getDevicesByBrowser(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceBrowserMapList;
 	}
 }

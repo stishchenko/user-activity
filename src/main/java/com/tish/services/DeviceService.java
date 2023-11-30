@@ -5,6 +5,8 @@ import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,7 @@ public class DeviceService {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 		}
 
 		return mapList;
@@ -46,7 +48,7 @@ public class DeviceService {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 		}
 
 		return mapList;
@@ -62,7 +64,7 @@ public class DeviceService {
 			if (dataType.contains("value"))
 				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
 			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), pair.getValue() / totalDevicesAmount * 100.0);
+				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 		}
 
 		return mapList;

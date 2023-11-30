@@ -4,6 +4,8 @@ import com.tish.daos.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,8 @@ public class UserAmountService {
 		}
 		if (dataType.contains("percent")) {
 			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("singleUsersPercent", singleUsersAmount / totalUsersAmount * 100.0);
-			percentMap.put("repeatUsersPercent", repeatUsersAmount / totalUsersAmount * 100.0);
+			percentMap.put("singleUsersPercent", BigDecimal.valueOf(singleUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentMap.put("repeatUsersPercent", BigDecimal.valueOf(repeatUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 			mapList.add(percentMap);
 		}
 		return mapList;
@@ -53,8 +55,8 @@ public class UserAmountService {
 		}
 		if (dataType.contains("percent")) {
 			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("firstPageUsersPercent", firstPageUsersAmount / totalUsersAmount * 100.0);
-			percentMap.put("severalPageUsersPercent", severalPageUsersAmount / totalUsersAmount * 100.0);
+			percentMap.put("firstPageUsersPercent", BigDecimal.valueOf(firstPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentMap.put("severalPageUsersPercent", BigDecimal.valueOf(severalPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 			mapList.add(percentMap);
 		}
 

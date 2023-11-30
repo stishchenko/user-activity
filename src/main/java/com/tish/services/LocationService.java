@@ -7,6 +7,8 @@ import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +57,8 @@ public class LocationService {
 			listMap.add(valueMap);
 		}
 		if (dataType.contains("percent")) {
-			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
+
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalUsers * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 			listMap.add(percentMap);
 		}
 
@@ -74,7 +77,7 @@ public class LocationService {
 			listMap.add(valueMap);
 		}
 		if (dataType.contains("percent")) {
-			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalVisits * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 			listMap.add(percentMap);
 		}
 
@@ -110,7 +113,7 @@ public class LocationService {
 			listMap.add(valueMap);
 		}
 		if (dataType.contains("percent")) {
-			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalUsers * 100.0));
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalUsers * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 			listMap.add(percentMap);
 		}
 
@@ -129,7 +132,7 @@ public class LocationService {
 			listMap.add(valueMap);
 		}
 		if (dataType.contains("percent")) {
-			pairList.forEach(pair -> percentMap.put(pair.getItem(), pair.getValue() / totalVisits * 100.0));
+			pairList.forEach(pair -> percentMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalVisits * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 			listMap.add(percentMap);
 		}
 

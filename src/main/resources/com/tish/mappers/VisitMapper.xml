@@ -38,13 +38,15 @@
 
 	<select id="getUniqueVisitsAmount" parameterType="map" resultType="integer">
 		select count(*)
+		from (
+		select count(*)
 		from visits
 		<where>
 			web_app = #{webApp}
 			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
 			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
 		</where>
-		group by user_id, device_id, location_id, visits.page, creation_date
+		group by user_id, device_id, location_id) as visit_count
 	</select>
 
 	<select id="getVisitsAmountByPeriods" parameterType="map" resultMap="intStatPairMap">

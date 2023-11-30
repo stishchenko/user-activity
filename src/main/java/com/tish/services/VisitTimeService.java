@@ -5,6 +5,8 @@ import com.tish.models.DoubleStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +24,7 @@ public class VisitTimeService {
 	public Map<String, Double> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp) {
 		Map<String, Double> avgMap = new HashMap<>();
 		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPeriod(fromDate, toDate, webApp);
-		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), pair.getValue()));
+		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 
 		return avgMap;
 	}
@@ -30,7 +32,7 @@ public class VisitTimeService {
 	public Map<String, Double> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp) {
 		Map<String, Double> avgMap = new HashMap<>();
 		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPage(fromDate, toDate, webApp);
-		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), pair.getValue()));
+		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
 
 		return avgMap;
 	}
@@ -49,8 +51,8 @@ public class VisitTimeService {
 		}
 		if (dataType.contains("percent")) {
 			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("cancellationVisitsPercent", cancellationVisitsAmount / totalVisitsAmount * 100.0);
-			percentMap.put("otherVisitsPercent", otherVisitsAmount / totalVisitsAmount * 100.0);
+			percentMap.put("cancellationVisitsPercent", BigDecimal.valueOf(cancellationVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentMap.put("otherVisitsPercent", BigDecimal.valueOf(otherVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
 			mapList.add(percentMap);
 		}
 		return mapList;

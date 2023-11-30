@@ -5,6 +5,9 @@ import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +28,8 @@ public class ConversionService {
 
 		for (int i = 0; i < targetVisits.size(); i++) {
 			IntegerStatisticsPair pair = targetVisits.get(i);
-			map.put(pair.getItem(), pair.getValue() / totalVisits.get(i).getValue() * 100.0);
+			Double result = BigDecimal.valueOf(pair.getValue().doubleValue() / totalVisits.get(i).getValue() * 100).setScale(2, RoundingMode.HALF_UP).doubleValue() ;
+			map.put(pair.getItem(), result);
 		}
 
 		return map;
