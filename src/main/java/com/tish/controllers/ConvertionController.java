@@ -30,11 +30,11 @@ public class ConvertionController {
 	public String getConvertionPage(Model model) {
 
 
-		return "";
+		return "conversion-statistics";
 	}
 
 	@PostMapping(path = {"/"})
-	public Map<String, Double> getConvertionByPeriod(/*@RequestBody(required = false) String barType, @RequestBody String periodType,
+	public Map<String, Double> getConvertionByPeriod(/*@RequestBody(required = false) String chartType, @RequestBody String periodType,
 													 @RequestBody String webApp,
 													 @RequestBody(required = false) String fromDate,
 													 @RequestBody(required = false) String toDate*/
