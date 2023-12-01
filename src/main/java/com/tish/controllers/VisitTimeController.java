@@ -27,7 +27,7 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/avg-time-period"})
-	public Map<String, Double> getAverageVisitTimeByPeriod(/*@RequestBody(required = false) String barType,
+	public Map<String, Double> getAverageVisitTimeByPeriod(/*@RequestBody(required = false) String chartType,
 														   @RequestBody String webApp,
 														   @RequestBody String fromDate, @RequestBody String toDate*/
 			@RequestBody Map<String, String> params) {
@@ -36,7 +36,7 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/avg-page-period"})
-	public Map<String, Double> getAveragePagePeriod(/*@RequestBody(required = false) String barType,
+	public Map<String, Double> getAveragePagePeriod(/*@RequestBody(required = false) String chartType,
 													@RequestBody String webApp,
 													@RequestBody String fromDate, @RequestBody String toDate*/
 			@RequestBody Map<String, String> params) {
