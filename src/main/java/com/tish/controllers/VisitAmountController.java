@@ -20,10 +20,10 @@ public class VisitAmountController {
 		this.visitAmountService = visitAmountService;
 	}
 
-	@GetMapping(path = {"", "/"})
+	@GetMapping(path = { "/amount"})
 	public String getVisitAmountPage(Model model) {
 
-		return "";
+		return "visit-amount-statistics";
 	}
 
 	@PostMapping(path = {"/amount"})
@@ -31,7 +31,7 @@ public class VisitAmountController {
 													@RequestBody String webApp,
 													@RequestBody String dataType,
 													@RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return mapList;
 	}

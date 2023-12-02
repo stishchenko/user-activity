@@ -26,20 +26,20 @@ public class ConvertionController {
 		return "Hello";
 	}
 
-	@GetMapping(path = {"", "/"})
+	@GetMapping(path = {""})
 	public String getConvertionPage(Model model) {
 
 
 		return "conversion-statistics";
 	}
 
-	@PostMapping(path = {"/"})
+	@PostMapping(path = {""})
 	public Map<String, Double> getConvertionByPeriod(/*@RequestBody(required = false) String chartType, @RequestBody String periodType,
 													 @RequestBody String webApp,
 													 @RequestBody(required = false) String fromDate,
 													 @RequestBody(required = false) String toDate*/
 
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		Map<String, Double> map = conversionService.getConversion(params.get("periodType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return map;
 	}

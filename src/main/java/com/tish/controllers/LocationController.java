@@ -22,10 +22,16 @@ public class LocationController {
 	}
 
 
-	@GetMapping(path = {"", "/"})
-	public String getLocationPage(Model model) {
+	@GetMapping(path = { "/country"})
+	public String getLocationCountryPage(Model model) {
 
-		return "";
+		return "country-statistics";
+	}
+
+	@GetMapping(path = { "/city"})
+	public String getLocationCityPage(Model model) {
+
+		return "city-statistics";
 	}
 
 	@PostMapping(path = {"/country"})
@@ -34,7 +40,7 @@ public class LocationController {
 											@RequestBody String dataType,
 											@RequestBody String webApp,
 											@RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		// dataType  = value, percent or value+percent
 		List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
@@ -51,7 +57,7 @@ public class LocationController {
 										 @RequestBody String dataType,
 										 @RequestBody String webApp,
 										 @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		// dataType  = value, percent or value+percent
 		List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));

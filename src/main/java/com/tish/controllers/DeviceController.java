@@ -21,10 +21,22 @@ public class DeviceController {
 	}
 
 
-	@GetMapping(path = {"", "/"})
-	public String getDevicePage(Model model) {
+	@GetMapping(path = {"/type"})
+	public String getDeviceTypePage(Model model) {
 
-		return "";
+		return "device-type-statistics";
+	}
+
+	@GetMapping(path = {"/os"})
+	public String getDeviceOSPage(Model model) {
+
+		return "device-os-statistics";
+	}
+
+	@GetMapping(path = {"/browser"})
+	public String getDeviceBrowserPage(Model model) {
+
+		return "device-browser-statistics";
 	}
 
 	@PostMapping(path = {"/type"})
@@ -32,7 +44,7 @@ public class DeviceController {
 											  @RequestBody String dataType,
 											  @RequestBody String webApp,
 											  @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> deviceTypeMapList = deviceService.getDevicesByType(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceTypeMapList;
 	}
@@ -42,7 +54,7 @@ public class DeviceController {
 										   @RequestBody String dataType,
 										   @RequestBody String webApp,
 										   @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> deviceOSMapList = deviceService.getDevicesByOS(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceOSMapList;
 	}
@@ -52,7 +64,7 @@ public class DeviceController {
 												 @RequestBody String dataType,
 												 @RequestBody String webApp,
 												 @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> deviceBrowserMapList = deviceService.getDevicesByBrowser(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return deviceBrowserMapList;
 	}

@@ -87,37 +87,41 @@
                 <!--<h2>Statistics</h2>-->
                 <ul class="navbar-nav flex-column left-menu">
                     <li class="nav-item mb-2">
-                        <a class="nav-link" href="#">Conversion</a>
+                        <a class="nav-link" href="#" th:href="@{/convestion}">Conversion</a>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Devices</a>
                         <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#">Types</a></li>
-                            <li><a class="nav-link" href="#">OS</a></li>
-                            <li><a class="nav-link" href="#">Browser</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/devices/type}">Types</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/devices/os}">OS</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/devices/browser}">Browser</a></li>
                         </ul>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Location</a>
                         <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#">Countries</a></li>
-                            <li><a class="nav-link" href="#">Cities</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/location/country}">Countries</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/location/city}">Cities</a></li>
                         </ul>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Users</a>
                         <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#">Global Frequency</a></li>
-                            <li><a class="nav-link active" href="#">Page Visit Frequency</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/users/ratio}">Global Frequency</a></li>
+                            <li><a class="nav-link active" href="#" th:href="@{/users/user-page-visit}">Page`s
+                                Frequency</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Visits</a>
                         <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#">Global Frequency</a></li>
-                            <li><a class="nav-link" href="#">Average Visit`s Time</a></li>
-                            <li><a class="nav-link" href="#">Average Page`s Time</a></li>
-                            <li><a class="nav-link" href="#">Cancellation</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/visits/amount}">Global Frequency</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/visit-time/avg-time-period}">Average Visit`s
+                                Time</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/visit-time/avg-page-period}">Average Page`s
+                                Time</a></li>
+                            <li><a class="nav-link" href="#" th:href="@{/visit-time/cancellation}">Cancellation</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -130,7 +134,7 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                             <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Statistics</a>
+                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/convestion}">Statistics</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Account</a>
@@ -141,27 +145,35 @@
                 </nav>
             </div>
             <div class="work-area d-flex flex-column p-5">
-                <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Page Visit Frequency Statistics</div>
+                <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Page Visit Frequency Statistics
+                </div>
                 <div class="d-flex justify-content-center mb-4">
-                    <form class="d-flex">
-                        <select class="form-select me-2 border border-secondary" aria-label="Current app">
-                            <option value="1" selected>app1</option>
-                            <option value="2">app2</option>
+                    <form class="d-flex" th:action="@{/users/user-page-visit}" th:object="${settings}" method="post">
+                        <select class="form-select me-2 border border-secondary" aria-label="Current app"
+                                th:field="*{webApp}">
+                            <option value="app1" selected>app1</option>
+                            <option value="app2">app2</option>
                         </select>
-                        <select class="form-select me-2 border border-secondary" aria-label="Chart type">
-                            <option value="1" selected>Pie Chart</option>
-                            <option value="2">Vertical Bar</option>
-                            <option value="3">Horizontal Bar</option>
+                        <select class="form-select me-2 border border-secondary" aria-label="Chart type"
+                                th:field="*{chartType}">
+                            <option value="pie" selected>Pie Chart</option>
+                            <option value="x bar" selected>Vertical Bar</option>
+                            <option value="y bar">Horizontal Bar</option>
                         </select>
                         <div class="btn-group me-2" role="group" aria-label="Data type checkbox group">
-                            <input type="checkbox" class="btn-check" id="btn_check_value" autocomplete="off" checked>
+                            <input type="checkbox" value="value" class="btn-check" id="btn_check_value"
+                                   autocomplete="off" checked
+                                   th:field="*{dataTypes[0]}">
                             <label class="btn btn-outline-secondary" for="btn_check_value">Values</label>
 
-                            <input type="checkbox" class="btn-check" id="btn_check_percent" autocomplete="off">
+                            <input type="checkbox" value="percent" class="btn-check" id="btn_check_percent"
+                                   autocomplete="off"
+                                   th:field="*{dataTypes[1]}">
                             <label class="btn btn-outline-secondary" for="btn_check_percent">Percents</label>
                         </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test"
+                               th:field="*{dates}">
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btncheck3"
                                    autocomplete="off" checked>
@@ -171,10 +183,11 @@
                                    autocomplete="off">
                             <label class="btn btn-outline-secondary" for="btncheck4">Year</label>
                         </div>-->
+                        <input type="submit" value="Update chart" class="btn btn-secondary">
                     </form>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <!--<canvas id="myChart"></canvas>-->
+                    <canvas id="myChart"></canvas>
                 </div>
                 <!-- Your bottom block content -->
             </div>

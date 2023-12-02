@@ -20,10 +20,16 @@ public class UserAmountController {
 		this.userAmountService = userAmountService;
 	}
 
-	@GetMapping(path = {"", "/"})
-	public String getUsersPage(Model model) {
+	@GetMapping(path = { "/ratio"})
+	public String getUsersRatioPage(Model model) {
 
-		return "";
+		return "user-ratio-statistics";
+	}
+
+	@GetMapping(path = { "/user-page-visit"})
+	public String getUsersPageVisitPage(Model model) {
+
+		return "user-page-statistics";
 	}
 
 	@PostMapping(path = {"/ratio"})
@@ -31,7 +37,7 @@ public class UserAmountController {
 													@RequestBody String dataType,
 													@RequestBody String webApp,
 													@RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> mapList = userAmountService.getUsersAmountAsSingleAndRepeat(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return mapList;
 	}
@@ -41,7 +47,7 @@ public class UserAmountController {
 															   @RequestBody String dataType,
 															   @RequestBody String webApp,
 															   @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> mapList = userAmountService.getUsersAmountByVisitTimes(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return mapList;
 	}

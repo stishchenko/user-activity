@@ -20,17 +20,29 @@ public class VisitTimeController {
 		this.visitTimeService = visitTimeService;
 	}
 
-	@GetMapping(path = {"", "/"})
-	public String getVisitAimePage(Model model) {
+	@GetMapping(path = {"/avg-time-period"})
+	public String getAvgVisitTimePage(Model model) {
 
-		return "";
+		return "visit-avg-time-statistics";
+	}
+
+	@GetMapping(path = {"/avg-page-period"})
+	public String getAvgPageStatisticsPage(Model model) {
+
+		return "visit-avg-page-statistics";
+	}
+
+	@GetMapping(path = {"/cancellation"})
+	public String getCancellationPage(Model model) {
+
+		return "visit-cancellation-statistics";
 	}
 
 	@PostMapping(path = {"/avg-time-period"})
 	public Map<String, Double> getAverageVisitTimeByPeriod(/*@RequestBody(required = false) String chartType,
 														   @RequestBody String webApp,
 														   @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		Map<String, Double> map = visitTimeService.getAvgVisitTimeByPeriod(params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return map;
 	}
@@ -39,7 +51,7 @@ public class VisitTimeController {
 	public Map<String, Double> getAveragePagePeriod(/*@RequestBody(required = false) String chartType,
 													@RequestBody String webApp,
 													@RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		Map<String, Double> avgMap = visitTimeService.getAvgVisitTimeByPage(params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return avgMap;
 	}
@@ -49,7 +61,7 @@ public class VisitTimeController {
 														   @RequestBody String dataType,
 														   @RequestBody String webApp,
 														   @RequestBody String fromDate, @RequestBody String toDate*/
-			@RequestBody Map<String, String> params) {
+			@RequestBody Map<String, String> params/*, @ModelAttribute("settings") Settings settings, Model model*/) {
 		List<Map<String, Double>> mapList = visitTimeService.getCancellations(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
 		return mapList;
 	}
