@@ -81,14 +81,14 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="../static/twitter_header_photo_1.png" width="300" alt="logo">
+                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
                 <!--<h2>Statistics</h2>-->
                 <ul class="navbar-nav flex-column left-menu">
                     <li class="nav-item mb-2">
-                        <a class="nav-link active" href="#" th:href="@{/convestion}">Conversion</a>
+                        <a class="nav-link active" href="#" th:href="@{/conversion}">Conversion</a>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Devices</a>
@@ -134,7 +134,7 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                             <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/convestion}">Statistics</a>
+                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/conversion}">Statistics</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Account</a>
@@ -147,12 +147,14 @@
             <div class="work-area d-flex flex-column p-5">
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Conversion Statistics</div>
                 <div class="d-flex justify-content-center mb-4">
-                    <form class="d-flex" th:action="@{/convestion}" th:object="${settings}" method="post">
-                        <select class="form-select me-2 border border-secondary" aria-label="Current app" th:field="*{webApp}">
+                    <form class="d-flex" th:action="@{/conversion}" th:object="${settings}" method="post">
+                        <select class="form-select me-2 border border-secondary" aria-label="Current app"
+                                th:field="*{webApp}">
                             <option value="app1" selected>app1</option>
                             <option value="app2">app2</option>
                         </select>
-                        <select class="form-select me-2 border border-secondary" aria-label="Chart type" th:field="*{chartType}">
+                        <select class="form-select me-2 border border-secondary" aria-label="Chart type"
+                                th:field="*{chartType}">
                             <option value="x bar" selected>Vertical Bar</option>
                             <option value="y bar">Horizontal Bar</option>
                             <option value="line">Line Chart</option>
@@ -165,10 +167,10 @@
                             <label class="btn btn-outline-secondary" for="btncheck2">Percents</label>
                         </div>-->
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test" th:field="*{dates}">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
                         <div class="btn-group me-2" role="group" aria-label="Period type checkbox group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btn_check_month"
-                                   autocomplete="off" value="month" checked th:field="*{periodType}">
+                                   autocomplete="off" value="month" th:field="*{periodType}" checked>
                             <label class="btn btn-outline-secondary" for="btn_check_month">Month</label>
 
                             <input type="radio" class="btn-check" name="chart-interval" id="btn_check_year"
@@ -185,37 +187,41 @@
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                startDate: '2021-01-01',
+                endDate: '2023-12-31',
                 locale: {
                     format: 'YYYY.M.DD'
                 }
             });
 
         });
-    </script>
-    <script th:inline="javascript">
+
+        /*$('input[name="dateRangePicker"]').on('apply.daterangepicker', function (ev, picker) {
+            [[${startDate}]] = picker.startDate.val();
+            [[${endDate}]] = picker.endDate.val();
+        });*/
+
         var ctx = document.getElementById("myChart").getContext("2d");
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var data = [[${values}]];
+        var labels = [[${labels}]];
         var myChart = new Chart(ctx, {
-            type: "bar",
+            type: type,
             data: {
-                labels: ["January", "February", "March", "April", "May", "June"],
+                labels: labels,
                 datasets: [{
-                    label: "My First Dataset",
-                    data: [10, 20, 15, 30, 12, 17]
+                    label: "Conversion data, %",
+                    data: data
                 }]
             },
             options: {
-                title: {
-                    text: "My First Chart"
-                },
-
+                indexAxis: axis
             }
         });
     </script>
-
 </body>
 </html>

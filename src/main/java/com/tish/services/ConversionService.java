@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ConversionService {
@@ -21,16 +19,27 @@ public class ConversionService {
 		this.visitDao = visitDao;
 	}
 
-	public Map<String, Double> getConversion(String periodType, String fromDate, String toDate, String webApp) {
-		Map<String, Double> map = new HashMap<>();
+	public Map<String, List> getConversion(String periodType, String fromDate, String toDate, String webApp) {
+		Map<String, List> map = new HashMap<>();
+		List<String> labels = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+
 		List<IntegerStatisticsPair> totalVisits = visitDao.getVisitsAmountByPeriods(periodType, fromDate, toDate, webApp);
 		List<IntegerStatisticsPair> targetVisits = visitDao.getTargetVisitsAmountByPeriods(periodType, fromDate, toDate, webApp);
 
-		for (int i = 0; i < targetVisits.size(); i++) {
-			IntegerStatisticsPair pair = targetVisits.get(i);
-			Double result = BigDecimal.valueOf(pair.getValue().doubleValue() / totalVisits.get(i).getValue() * 100).setScale(2, RoundingMode.HALF_UP).doubleValue() ;
-			map.put(pair.getItem(), result);
+		for (int i = 0, counter = 0; i < totalVisits.size(); i++) {
+			Double result = 0.0;
+			if (targetVisits.get(counter).getItem().equals(totalVisits.get(i).getItem())) {
+				IntegerStatisticsPair pair = targetVisits.get(counter);
+				result = BigDecimal.valueOf(pair.getValue().doubleValue() / totalVisits.get(i).getValue() * 100).setScale(2, RoundingMode.HALF_UP).doubleValue();
+				counter++;
+			}
+			labels.add(totalVisits.get(i).getItem());
+			values.add(result);
 		}
+
+		map.put("labels", labels);
+		map.put("values", values);
 
 		return map;
 	}

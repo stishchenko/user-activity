@@ -13,9 +13,10 @@ import java.util.List;
 @Builder
 public class Settings {
 	private String chartType;
-	private String periodType;
+	private String periodType = "month";
 	private List<String> dataTypes;
 	private List<String> statisticObjectType;
-	private String dates;
+	private String startDate = "2021-01-01";
+	private String endDate = "2023-12-31";
 	private String webApp;
 }
