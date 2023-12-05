@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Location</title>
@@ -80,14 +80,14 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="../static/twitter_header_photo_1.png" width="300" alt="logo">
+                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
                 <!--<h2>Statistics</h2>-->
                 <ul class="navbar-nav flex-column left-menu">
                     <li class="nav-item mb-2">
-                        <a class="nav-link" href="#" th:href="@{/convestion}">Conversion</a>
+                        <a class="nav-link" href="#" th:href="@{/conversion}">Conversion</a>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link" href="javascript:void(0)">Devices</a>
@@ -133,7 +133,7 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                             <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/convestion}">Statistics</a>
+                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/conversion}">Statistics</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Account</a>
@@ -147,33 +147,37 @@
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Country Statistics</div>
                 <div class="d-flex justify-content-center mb-4">
                     <form class="d-flex" th:action="@{/location/country}" th:object="${settings}" method="post">
-                        <select class="form-select me-2 border border-secondary" aria-label="Current app" th:field="*{webApp}">
+                        <select class="form-select me-2 border border-secondary" aria-label="Current app"
+                                th:field="*{webApp}">
                             <option value="app1" selected>app1</option>
                             <option value="app2">app2</option>
                         </select>
-                        <select class="form-select me-2 border border-secondary" aria-label="Chart type" th:field="*{chartType}">
-                            <option value="pie" selected>Pie Chart</option>
+                        <select class="form-select me-2 border border-secondary" aria-label="Chart type"
+                                th:field="*{chartType}">
                             <option value="x bar">Vertical Bar</option>
                             <option value="y bar">Horizontal Bar</option>
-                            <option value="polarArea">Polar Area Chart</option>
                             <option value="radar">Radar Chart</option>
                         </select>
                         <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" value="value" class="btn-check" id="btn_check_value" autocomplete="off" checked th:field="*{dataTypes[0]}">
+                            <input type="checkbox" value="value" class="btn-check" id="btn_check_value"
+                                   autocomplete="off" checked th:field="*{dataTypes[0]}">
                             <label class="btn btn-outline-secondary" for="btn_check_value">Values</label>
 
-                            <input type="checkbox" value="percent" class="btn-check" id="btn_check_percent" autocomplete="off" th:field="*{dataTypes[1]}">
+                            <input type="checkbox" value="percent" class="btn-check" id="btn_check_percent"
+                                   autocomplete="off" th:field="*{dataTypes[1]}">
                             <label class="btn btn-outline-secondary" for="btn_check_percent">Percents</label>
                         </div>
                         <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" value="user" class="btn-check" id="btn_check_user" autocomplete="off" checked th:field="*{statisticObjectType[0]}">
+                            <input type="checkbox" value="user" class="btn-check" id="btn_check_user" autocomplete="off"
+                                   checked th:field="*{statisticObjectType[0]}">
                             <label class="btn btn-outline-secondary" for="btn_check_user">Users</label>
 
-                            <input type="checkbox" value="visit" class="btn-check" id="btn_check_visit" autocomplete="off" th:field="*{statisticObjectType[1]}">
+                            <input type="checkbox" value="visit" class="btn-check" id="btn_check_visit"
+                                   autocomplete="off" th:field="*{statisticObjectType[1]}">
                             <label class="btn btn-outline-secondary" for="btn_check_visit">Visits</label>
                         </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test" th:field="*{dates}">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btncheck3"
                                    autocomplete="off" checked>
@@ -187,22 +191,160 @@
                     </form>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myValChart"></canvas>
                 </div>
+                <div class="d-flex justify-content-center">
+                    <canvas id="myPerChart"></canvas>
+                </div>
+                <!--<div class="d-flex justify-content-center">
+                    <canvas id="myPercentChart"></canvas>
+                </div>-->
                 <!-- Your bottom block content -->
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                startDate: '2022-01-01',
+                endDate: '2023-12-31',
                 locale: {
                     format: 'YYYY.M.DD'
                 }
             });
         });
+
+
+        /*if (!Array.isArray(objectType)) {
+            if (objectType === 'user') {
+                if (!Array.isArray(dataType)) {
+                    if (dataType === 'value') {
+                        var userValues = [[${userValues}]];
+                        var value_ctx = document.getElementById("myValueChart").getContext("2d");
+                    } else {
+                        var userPercent = [[${userPercent}]];
+                        var percent_ctx = document.getElementById("myPercentChart").getContext("2d");
+                    }
+                } else {
+                    var userValues = [[${userValues}]];
+                    var userPercent = [[${userPercent}]];
+                    var value_ctx = document.getElementById("myValueChart").getContext("2d");
+                    var percent_ctx = document.getElementById("myPercentChart").getContext("2d");
+                }
+            } else {
+                if (!Array.isArray(dataType)) {
+                    if (dataType === 'value') {
+                        var visitValues = [[${visitValues}]];
+                        var value_ctx = document.getElementById("myValueChart").getContext("2d");
+                    } else {
+                        var visitPercent = [[${visitPercent}]];
+                        var percent_ctx = document.getElementById("myPercentChart").getContext("2d");
+                    }
+                } else {
+                    var visitValues = [[${visitValues}]];
+                    var visitPercent = [[${visitPercent}]];
+                    var value_ctx = document.getElementById("myValueChart").getContext("2d");
+                    var percent_ctx = document.getElementById("myPercentChart").getContext("2d");
+                }
+            }
+        } else {
+            if (!Array.isArray(dataType)) {
+                if (dataType === 'value') {
+                    var userValues = [[${userValues}]];
+                    var visitValues = [[${visitValues}]];
+                    var value_ctx = document.getElementById("myValueChart").getContext("2d");
+                } else {
+                    var userPercent = [[${userPercent}]];
+                    var visitPercent = [[${visitPercent}]];
+                    var percent_ctx = document.getElementById("myPercentChart").getContext("2d");
+                }
+            } else {
+
+
+            }
+        }*/
+
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var labels = [[${labels}]];
+
+
+        var objectType = [[${objectType}]];
+        var dataType = [[${dataType}]];
+        var userValues = [[${userValues}]];
+        var userPercent = [[${userPercent}]];
+        var visitValues = [[${visitValues}]];
+        var visitPercent = [[${visitPercent}]];
+        var ctx = document.getElementById("myValChart").getContext("2d");
+
+        var myValChart = new Chart(ctx, {
+            data: {
+                labels: labels,
+                datasets: [{
+                    type: type,
+                    label: "User values",
+                    data: userValues
+                }, {
+                    type: type,
+                    label: "Visit values",
+                    data: visitValues
+                }]
+            },
+            options: {
+                indexAxis: axis
+            }
+        });
+        var ctx = document.getElementById("myPerChart").getContext("2d");
+        var myPerChart = new Chart(ctx, {
+            data: {
+                labels: labels,
+                datasets: [{
+                    type: type,
+                    label: "User percents",
+                    data: userPercent
+                }, {
+                    type: type,
+                    label: "Visit percents",
+                    data: visitPercent
+                }]
+            },
+            options: {
+                indexAxis: axis
+            }
+        });
+        /*var ctx = document.getElementById("myValChart").getContext("2d");
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var data = [[${values}]];
+        var labels = [[${labels}]];
+        var myValChart = new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Country data, %",
+                    data: data
+                }]
+            },
+            options: {
+                indexAxis: axis
+            }
+        });
+
+       var ctx = document.getElementById("myPerChart").getContext("2d");
+       var myPerChart = new Chart(ctx, {
+           type: type,
+           data: {
+               labels: labels,
+               datasets: [{
+                   label: "Country per data, %",
+                   data: data
+               }]
+           },
+           options: {
+               indexAxis: axis
+           }
+       });*/
     </script>
 
 </body>
