@@ -80,7 +80,7 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
+                <img th:src="@{/twitter_header_photo_1.png}" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
@@ -147,7 +147,8 @@
             <div class="work-area d-flex flex-column p-5">
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Average Visit Statistics</div>
                 <div class="d-flex justify-content-center mb-4">
-                    <form class="d-flex" th:action="@{/visit-time/avg-time-period}" th:object="${settings}" method="post">
+                    <form class="d-flex" th:action="@{/visit-time/avg-time-period}" th:object="${settings}"
+                          method="post">
                         <select class="form-select me-2 border border-secondary" aria-label="Current app"
                                 th:field="*{webApp}">
                             <option value="app1" selected>app1</option>
