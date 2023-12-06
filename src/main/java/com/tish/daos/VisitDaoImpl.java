@@ -39,8 +39,8 @@ public class VisitDaoImpl implements VisitDao {
 	}
 
 	@Override
-	public List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp) {
-		return visitMapper.getAvgVisitTimeByPeriod(fromDate, toDate, webApp);
+	public List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String periodType, String fromDate, String toDate, String webApp) {
+		return visitMapper.getAvgVisitTimeByPeriod(periodType, fromDate, toDate, webApp);
 	}
 
 	@Override

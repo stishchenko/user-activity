@@ -20,47 +20,60 @@ public class UserAmountService {
 		this.userDao = userDao;
 	}
 
-	public List<Map<String, Double>> getUsersAmountAsSingleAndRepeat(String dataType, String fromDate, String toDate, String webApp) {
+	public Map<String, List> getUsersAmountAsSingleAndRepeat(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer singleUsersAmount = userDao.getSingleUsersListWithTimePeriod(fromDate, toDate, webApp);
 		Integer repeatUsersAmount = totalUsersAmount - singleUsersAmount;
 
-		List<Map<String, Double>> mapList = new ArrayList<>();
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
+
+		List<String> labels = new ArrayList<>();
+		labels.add("Single users");
+		labels.add("Repeat users");
+		returnMap.put("labels", labels);
+
 		if (dataType.contains("value")) {
-			Map<String, Double> valueMap = new HashMap<>();
-			valueMap.put("singleUsers", singleUsersAmount.doubleValue());
-			valueMap.put("repeatUsers", repeatUsersAmount.doubleValue());
-			mapList.add(valueMap);
+			valueList.add(singleUsersAmount.doubleValue());
+			valueList.add(repeatUsersAmount.doubleValue());
+			returnMap.put("values", valueList);
 		}
 		if (dataType.contains("percent")) {
-			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("singleUsersPercent", BigDecimal.valueOf(singleUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			percentMap.put("repeatUsersPercent", BigDecimal.valueOf(repeatUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			mapList.add(percentMap);
+			percentList.add(BigDecimal.valueOf(singleUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentList.add(BigDecimal.valueOf(repeatUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			returnMap.put("percent", percentList);
 		}
-		return mapList;
+
+		return returnMap;
 	}
 
-	public List<Map<String, Double>> getUsersAmountByVisitTimes(String dataType, String fromDate, String toDate, String webApp) {
+	public Map<String, List> getUsersAmountByVisitTimes(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalUsersAmount = userDao.getTotalUsersAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer firstPageUsersAmount = userDao.getFirstPageUsersAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer severalPageUsersAmount = totalUsersAmount - firstPageUsersAmount;
 
-		List<Map<String, Double>> mapList = new ArrayList<>();
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
+
+		List<String> labels = new ArrayList<>();
+		labels.add("First page users");
+		labels.add("Several page users");
+		returnMap.put("labels", labels);
+
 		if (dataType.contains("value")) {
-			Map<String, Double> valueMap = new HashMap<>();
-			valueMap.put("firstPageUsers", firstPageUsersAmount.doubleValue());
-			valueMap.put("severalPageUsers", severalPageUsersAmount.doubleValue());
-			mapList.add(valueMap);
+			valueList.add(firstPageUsersAmount.doubleValue());
+			valueList.add(severalPageUsersAmount.doubleValue());
+			returnMap.put("values", valueList);
 		}
 		if (dataType.contains("percent")) {
-			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("firstPageUsersPercent", BigDecimal.valueOf(firstPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			percentMap.put("severalPageUsersPercent", BigDecimal.valueOf(severalPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			mapList.add(percentMap);
+			percentList.add(BigDecimal.valueOf(firstPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentList.add(BigDecimal.valueOf(severalPageUsersAmount.doubleValue() / totalUsersAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			returnMap.put("percent", percentList);
 		}
 
-		return mapList;
+		return returnMap;
 	}
 
 }

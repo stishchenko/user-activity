@@ -20,25 +20,32 @@ public class VisitAmountService {
 		this.visitDao = visitDao;
 	}
 
-	public List<Map<String, Double>> getVisitAmount(String dataType, String fromDate, String toDate, String webApp) {
+	public Map<String, List> getVisitAmount(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer uniqueVisitsAmount = visitDao.getUniqueVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer repeatVisitsAmount = totalVisitsAmount - uniqueVisitsAmount;
 
-		List<Map<String, Double>> mapList = new ArrayList<>();
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
+
+		List<String> labels = new ArrayList<>();
+		labels.add("Unique visits");
+		labels.add("Repeat visits");
+		returnMap.put("labels", labels);
+
 		if (dataType.contains("value")) {
-			Map<String, Double> valueMap = new HashMap<>();
-			valueMap.put("uniqueVisits", uniqueVisitsAmount.doubleValue());
-			valueMap.put("repeatVisits", repeatVisitsAmount.doubleValue());
-			mapList.add(valueMap);
+			valueList.add(uniqueVisitsAmount.doubleValue());
+			valueList.add(repeatVisitsAmount.doubleValue());
+			returnMap.put("values", valueList);
 		}
 		if (dataType.contains("percent")) {
-			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("uniqueVisitsPercent", BigDecimal.valueOf(uniqueVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			percentMap.put("repeatVisitsPercent", BigDecimal.valueOf(repeatVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			mapList.add(percentMap);
+			percentList.add(BigDecimal.valueOf(uniqueVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentList.add(BigDecimal.valueOf(repeatVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			returnMap.put("percent", percentList);
 		}
-		return mapList;
+
+		return returnMap;
 	}
 
 }

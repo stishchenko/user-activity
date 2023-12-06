@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Location</title>
@@ -80,7 +80,7 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="../static/twitter_header_photo_1.png" width="300" alt="logo">
+                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
@@ -177,8 +177,7 @@
                             <label class="btn btn-outline-secondary" for="btn_check_visit">Visits</label>
                         </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test"
-                               th:field="*{dates}">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btncheck3"
                                    autocomplete="off" checked>
@@ -192,13 +191,16 @@
                     </form>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myValChart"></canvas>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <canvas id="myPerChart"></canvas>
                 </div>
                 <!-- Your bottom block content -->
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
                 startDate: '2022-01-01',
@@ -208,6 +210,114 @@
                 }
             });
         });
+
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var labels = [[${labels}]];
+
+        var objectType = [[${objectType}]];
+        var dataType = [[${dataType}]];
+
+        function getChart(ctx, data, label) {
+            return new Chart(ctx, {
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        type: type,
+                        label: label,
+                        data: data
+                    }]
+                },
+                options: {
+                    indexAxis: axis
+                }
+            });
+        }
+
+        function get2Charts(ctx, data1, data2, label1, label2) {
+            return new Chart(ctx, {
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        type: type,
+                        label: label1,
+                        data: data1
+                    }, {
+                        type: type,
+                        label: label2,
+                        data: data2
+                    }]
+                },
+                options: {
+                    indexAxis: axis
+                }
+            });
+        }
+
+        if (!Array.isArray(objectType)) {
+            if (objectType === 'user') {
+                if (!Array.isArray(dataType)) {
+                    if (dataType === 'value') {
+                        var userValues = [[${userValues}]];
+                        var ctx = document.getElementById("myValChart").getContext("2d");
+                        var myValChart = getChart(ctx, userValues, "User values");
+                    } else {
+                        var userPercent = [[${userPercent}]];
+                        var ctx = document.getElementById("myPerChart").getContext("2d");
+                        var myPerChart = getChart(ctx, userPercent, "User percents");
+                    }
+                } else {
+                    var userValues = [[${userValues}]];
+                    var userPercent = [[${userPercent}]];
+                    var ctx = document.getElementById("myValChart").getContext("2d");
+                    var myValChart = getChart(ctx, userValues, "User values");
+                    var ctx = document.getElementById("myPerChart").getContext("2d");
+                    var myPerChart = getChart(ctx, userPercent, "User percents");
+                }
+            } else {
+                if (!Array.isArray(dataType)) {
+                    if (dataType === 'value') {
+                        var visitValues = [[${visitValues}]];
+                        var ctx = document.getElementById("myValChart").getContext("2d");
+                        var myValChart = getChart(ctx, visitValues, "Visit values");
+                    } else {
+                        var visitPercent = [[${visitPercent}]];
+                        var ctx = document.getElementById("myPerChart").getContext("2d");
+                        var myPerChart = getChart(ctx, visitPercent, "Visit percents");
+                    }
+                } else {
+                    var visitValues = [[${visitValues}]];
+                    var visitPercent = [[${visitPercent}]];
+                    var ctx = document.getElementById("myValChart").getContext("2d");
+                    var myValChart = getChart(ctx, visitValues, "Visit values");
+                    var ctx = document.getElementById("myPerChart").getContext("2d");
+                    var myPerChart = getChart(ctx, visitPercent, "Visit percents");
+                }
+            }
+        } else {
+            if (!Array.isArray(dataType)) {
+                if (dataType === 'value') {
+                    var userValues = [[${userValues}]];
+                    var visitValues = [[${visitValues}]];
+                    var ctx = document.getElementById("myValChart").getContext("2d");
+                    var myValChart = get2Charts(ctx, userValues, visitValues, "User values", "Visit values");
+                } else {
+                    var userPercent = [[${userPercent}]];
+                    var visitPercent = [[${visitPercent}]];
+                    var ctx = document.getElementById("myPerChart").getContext("2d");
+                    var myPerChart = get2Charts(ctx, userPercent, visitPercent, "User percents", "Visit percents");
+                }
+            } else {
+                var userValues = [[${userValues}]];
+                var userPercent = [[${userPercent}]];
+                var visitValues = [[${visitValues}]];
+                var visitPercent = [[${visitPercent}]];
+                var ctx = document.getElementById("myValChart").getContext("2d");
+                var myValChart = get2Charts(ctx, userValues, visitValues, "User values", "Visit values");
+                var ctx = document.getElementById("myPerChart").getContext("2d");
+                var myPerChart = get2Charts(ctx, userPercent, visitPercent, "User percents", "Visit percents");
+            }
+        }
     </script>
 
 </body>

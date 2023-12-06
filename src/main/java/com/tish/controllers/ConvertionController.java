@@ -23,13 +23,6 @@ public class ConvertionController {
 		this.conversionService = conversionService;
 	}
 
-	/*@GetMapping(path = {"/hello"})
-	public String getHello() {
-
-
-		return "Hello";
-	}*/
-
 	@GetMapping(path = {""})
 	public String getConvertionPage(Model model) {
 

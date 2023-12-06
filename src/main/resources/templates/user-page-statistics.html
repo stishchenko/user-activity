@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User</title>
@@ -80,7 +80,7 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="../static/twitter_header_photo_1.png" width="300" alt="logo">
+                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
@@ -172,8 +172,7 @@
                             <label class="btn btn-outline-secondary" for="btn_check_percent">Percents</label>
                         </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test"
-                               th:field="*{dates}">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btncheck3"
                                    autocomplete="off" checked>
@@ -187,22 +186,66 @@
                     </form>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myValChart"></canvas>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <canvas id="myPerChart"></canvas>
                 </div>
                 <!-- Your bottom block content -->
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                startDate: '2022-01-01',
+                endDate: '2022-12-31',
                 locale: {
                     format: 'YYYY.M.DD'
                 }
             });
         });
+
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var labels = [[${labels}]];
+
+        var dataType = [[${dataType}]];
+
+        function getChart(ctx, data, label) {
+            return new Chart(ctx, {
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        type: type,
+                        label: label,
+                        data: data
+                    }]
+                },
+                options: {
+                    indexAxis: axis
+                }
+            });
+        }
+
+        if (!Array.isArray(dataType)) {
+            if (dataType === 'value') {
+                var values = [[${values}]];
+                var ctx = document.getElementById("myValChart").getContext("2d");
+                var myValChart = getChart(ctx, values, "Page visit values");
+            } else {
+                var percent = [[${percent}]];
+                var ctx = document.getElementById("myPerChart").getContext("2d");
+                var myPerChart = getChart(ctx, percent, "Page visit percents");
+            }
+        } else {
+            var values = [[${values}]];
+            var percent = [[${percent}]];
+            var ctx = document.getElementById("myValChart").getContext("2d");
+            var myValChart = getChart(ctx, values, "Page visit values");
+            var ctx = document.getElementById("myPerChart").getContext("2d");
+            var myPerChart = getChart(ctx, percent, "Page visit percents");
+        }
     </script>
 
 </body>

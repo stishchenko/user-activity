@@ -18,7 +18,7 @@ public interface VisitMapper {
 
 	List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(@Param("periodType") String periodType, @Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 
-	List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
+	List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(@Param("periodType") String periodType,@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 
 	List<DoubleStatisticsPair> getAvgVisitTimeByPage(@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("webApp") String webApp);
 

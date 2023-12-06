@@ -2,6 +2,7 @@ package com.tish.services;
 
 import com.tish.daos.VisitDao;
 import com.tish.models.DoubleStatisticsPair;
+import com.tish.models.IntegerStatisticsPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,40 +22,56 @@ public class VisitTimeService {
 		this.visitDao = visitDao;
 	}
 
-	public Map<String, Double> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp) {
-		Map<String, Double> avgMap = new HashMap<>();
-		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPeriod(fromDate, toDate, webApp);
-		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+	public Map<String, List> getAvgVisitTimeByPeriod(String periodType, String fromDate, String toDate, String webApp) {
+		Map<String, List> avgMap = new HashMap<>();
+		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPeriod(periodType, fromDate, toDate, webApp);
+		List<String> labels = new ArrayList<>();
+		avgVisitsList.forEach(pair -> labels.add(pair.getItem()));
+		avgMap.put("labels", labels);
+		List<Double> values = new ArrayList<>();
+		avgVisitsList.forEach(pair -> values.add(BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+		avgMap.put("values", values);
 
 		return avgMap;
 	}
 
-	public Map<String, Double> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp) {
-		Map<String, Double> avgMap = new HashMap<>();
+	public Map<String, List> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp) {
+		Map<String, List> avgMap = new HashMap<>();
 		List<DoubleStatisticsPair> avgVisitsList = visitDao.getAvgVisitTimeByPage(fromDate, toDate, webApp);
-		avgVisitsList.forEach(pair -> avgMap.put(pair.getItem(), BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+		List<String> labels = new ArrayList<>();
+		avgVisitsList.forEach(pair -> labels.add(pair.getItem()));
+		avgMap.put("labels", labels);
+		List<Double> values = new ArrayList<>();
+		avgVisitsList.forEach(pair -> values.add(BigDecimal.valueOf(pair.getValue()).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+		avgMap.put("values", values);
 
 		return avgMap;
 	}
 
-	public List<Map<String, Double>> getCancellations(String dataType, String fromDate, String toDate, String webApp) {
+	public Map<String, List> getCancellations(String dataType, String fromDate, String toDate, String webApp) {
 		Integer totalVisitsAmount = visitDao.getTotalVisitsAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer cancellationVisitsAmount = visitDao.getCancellationAmountWithTimePeriod(fromDate, toDate, webApp);
 		Integer otherVisitsAmount = totalVisitsAmount - cancellationVisitsAmount;
 
-		List<Map<String, Double>> mapList = new ArrayList<>();
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
+
+		List<String> labels = new ArrayList<>();
+		labels.add("Cancellations");
+		labels.add("Other visits");
+		returnMap.put("labels", labels);
+
 		if (dataType.contains("value")) {
-			Map<String, Double> valueMap = new HashMap<>();
-			valueMap.put("cancellationVisits", cancellationVisitsAmount.doubleValue());
-			valueMap.put("otherVisits", otherVisitsAmount.doubleValue());
-			mapList.add(valueMap);
+			valueList.add(cancellationVisitsAmount.doubleValue());
+			valueList.add(otherVisitsAmount.doubleValue());
+			returnMap.put("values", valueList);
 		}
 		if (dataType.contains("percent")) {
-			Map<String, Double> percentMap = new HashMap<>();
-			percentMap.put("cancellationVisitsPercent", BigDecimal.valueOf(cancellationVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			percentMap.put("otherVisitsPercent", BigDecimal.valueOf(otherVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
-			mapList.add(percentMap);
+			percentList.add(BigDecimal.valueOf(cancellationVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			percentList.add(BigDecimal.valueOf(otherVisitsAmount.doubleValue() / totalVisitsAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+			returnMap.put("percent", percentList);
 		}
-		return mapList;
+		return returnMap;
 	}
 }

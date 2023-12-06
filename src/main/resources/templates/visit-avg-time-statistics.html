@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Visit</title>
@@ -80,7 +80,7 @@
     <div class="container">
         <div class="fixed-column">
             <div class="left-logo d-flex align-items-center">
-                <img src="../static/twitter_header_photo_1.png" width="300" alt="logo">
+                <img src="./twitter_header_photo_1.png" width="300" alt="logo">
             </div>
             <div class="navbar flex-column align-items-start left-content">
                 <!-- Your left column content -->
@@ -116,7 +116,8 @@
                         <a class="nav-link" href="javascript:void(0)">Visits</a>
                         <ul class="navbar-nav flex-column ps-3">
                             <li><a class="nav-link" href="#" th:href="@{/visits/amount}">Global Frequency</a></li>
-                            <li><a class="nav-link active" href="#" th:href="@{/visit-time/avg-time-period}">Average Visit`s
+                            <li><a class="nav-link active" href="#" th:href="@{/visit-time/avg-time-period}">Average
+                                Visit`s
                                 Time</a></li>
                             <li><a class="nav-link" href="#" th:href="@{/visit-time/avg-page-period}">Average Page`s
                                 Time</a></li>
@@ -146,12 +147,14 @@
             <div class="work-area d-flex flex-column p-5">
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Average Visit Statistics</div>
                 <div class="d-flex justify-content-center mb-4">
-                    <form class="d-flex" th:action="@{/visits/avg-time-period}" th:object="${settings}" method="post">
-                        <select class="form-select me-2 border border-secondary" aria-label="Current app" th:field="*{webApp}">
+                    <form class="d-flex" th:action="@{/visit-time/avg-time-period}" th:object="${settings}" method="post">
+                        <select class="form-select me-2 border border-secondary" aria-label="Current app"
+                                th:field="*{webApp}">
                             <option value="app1" selected>app1</option>
                             <option value="app2">app2</option>
                         </select>
-                        <select class="form-select me-2 border border-secondary" aria-label="Chart type" th:field="*{chartType}">
+                        <select class="form-select me-2 border border-secondary" aria-label="Chart type"
+                                th:field="*{chartType}">
                             <option value="x bar" selected>Vertical Bar</option>
                             <option value="y bar">Horizontal Bar</option>
                             <option value="line">Line Chart</option>
@@ -164,10 +167,10 @@
                             <label class="btn btn-outline-secondary" for="btncheck2">Percents</label>
                         </div>-->
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp" value="test" th:field="*{dates}">
-                        <div class="btn-group me-2" role="group" aria-label="Period type checkbox group">
-                            <input type="radio" value="month" class="btn-check" name="chart-interval" id="btn_check_month"
-                                   autocomplete="off" checked th:field="*{periodType}">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
+                        <div class="btn-group me-2" role="group" aria-label="Period type radio group">
+                            <input type="radio" value="month" class="btn-check" name="chart-interval"
+                                   id="btn_check_month" autocomplete="off" checked th:field="*{periodType}">
                             <label class="btn btn-outline-secondary" for="btn_check_month">Month</label>
 
                             <input type="radio" value="year" class="btn-check" name="chart-interval" id="btn_check_year"
@@ -184,15 +187,34 @@
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                startDate: '2022-01-01',
+                endDate: '2023-12-31',
                 locale: {
                     format: 'YYYY.M.DD'
                 }
             });
+        });
+
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var type = [[${type}]];
+        var axis = [[${axis}]];
+        var data = [[${values}]];
+        var labels = [[${labels}]];
+        var myChart = new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Avg visit time, seconds",
+                    data: data
+                }]
+            },
+            options: {
+                indexAxis: axis
+            }
         });
     </script>
 

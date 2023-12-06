@@ -101,14 +101,28 @@
 	</select>
 
 	<select id="getAvgVisitTimeByPeriod" parameterType="map" resultMap="doubleStatPairMap">
-		select concat(monthname(creation_date), ', ', year(creation_date)) as item, avg(visit_time) as value
-		from visits
-		<where>
-			web_app = #{webApp}
-			<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
-			<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
-		</where>
-		group by item
+		<choose>
+			<when test="periodType == 'year'">
+				select year(creation_date) as item, avg(visit_time) as value
+				from visits
+				<where>
+					web_app = #{webApp}
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</when>
+			<otherwise>
+				select concat(monthname(creation_date), ', ', year(creation_date)) as item, avg(visit_time) as value
+				from visits
+				<where>
+					web_app = #{webApp}
+					<if test="fromDate != null">and creation_date <![CDATA[>=]]> #{fromDate}</if>
+					<if test="toDate != null">and creation_date <![CDATA[<=]]> #{toDate}</if>
+				</where>
+				group by item
+			</otherwise>
+		</choose>
 	</select>
 
 	<select id="getAvgVisitTimeByPage" parameterType="map" resultMap="doubleStatPairMap">

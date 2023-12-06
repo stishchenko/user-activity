@@ -22,52 +22,73 @@ public class DeviceService {
 	}
 
 
-	public List<Map<String, Double>> getDevicesByType(String dataType, String fromDate, String toDate, String webApp) {
-		List<Map<String, Double>> mapList = new ArrayList<>();
-		mapList.add(new HashMap<>());
-		mapList.add(new HashMap<>());
+	public Map<String, List> getDevicesByType(String dataType, String fromDate, String toDate, String webApp) {
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
 		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByTypeWithTimePeriod(fromDate, toDate, webApp);
 		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
-		for (IntegerStatisticsPair pair : pairList) {
-			if (dataType.contains("value"))
-				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+
+		List<String> labels = new ArrayList<>();
+		pairList.forEach(pair -> labels.add(pair.getItem()));
+		returnMap.put("labels", labels);
+
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueList.add(pair.getValue().doubleValue()));
+			returnMap.put("values", valueList);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentList.add(BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+			returnMap.put("percent", percentList);
 		}
 
-		return mapList;
+		return returnMap;
 	}
 
-	public List<Map<String, Double>> getDevicesByOS(String dataType, String fromDate, String toDate, String webApp) {
-		List<Map<String, Double>> mapList = new ArrayList<>();
-		mapList.add(new HashMap<>());
-		mapList.add(new HashMap<>());
+	public Map<String, List> getDevicesByOS(String dataType, String fromDate, String toDate, String webApp) {
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
 		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByOSWithTimePeriod(fromDate, toDate, webApp);
 		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
-		for (IntegerStatisticsPair pair : pairList) {
-			if (dataType.contains("value"))
-				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+
+		List<String> labels = new ArrayList<>();
+		pairList.forEach(pair -> labels.add(pair.getItem()));
+		returnMap.put("labels", labels);
+
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueList.add(pair.getValue().doubleValue()));
+			returnMap.put("values", valueList);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentList.add(BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+			returnMap.put("percent", percentList);
 		}
 
-		return mapList;
+		return returnMap;
 	}
 
-	public List<Map<String, Double>> getDevicesByBrowser(String dataType, String fromDate, String toDate, String webApp) {
-		List<Map<String, Double>> mapList = new ArrayList<>();
-		mapList.add(new HashMap<>());
-		mapList.add(new HashMap<>());
+	public Map<String, List> getDevicesByBrowser(String dataType, String fromDate, String toDate, String webApp) {
+		Map<String, List> returnMap = new HashMap<>();
+		List<Double> valueList = new ArrayList<>();
+		List<Double> percentList = new ArrayList<>();
 		List<IntegerStatisticsPair> pairList = deviceDao.getDeviceStatisticsByBrowserWithTimePeriod(fromDate, toDate, webApp);
 		Integer totalDevicesAmount = deviceDao.getDevicesAmountWithTimePeriod(fromDate, toDate, webApp);
-		for (IntegerStatisticsPair pair : pairList) {
-			if (dataType.contains("value"))
-				mapList.get(0).put(pair.getItem(), pair.getValue().doubleValue());
-			if (dataType.contains("percent"))
-				mapList.get(1).put(pair.getItem(), BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue());
+
+		List<String> labels = new ArrayList<>();
+		pairList.forEach(pair -> labels.add(pair.getItem()));
+		returnMap.put("labels", labels);
+
+		if (dataType.contains("value")) {
+			pairList.forEach(pair -> valueList.add(pair.getValue().doubleValue()));
+			returnMap.put("values", valueList);
+		}
+		if (dataType.contains("percent")) {
+			pairList.forEach(pair -> percentList.add(BigDecimal.valueOf(pair.getValue().doubleValue() / totalDevicesAmount * 100).setScale(2, RoundingMode.HALF_UP).doubleValue()));
+			returnMap.put("percent", percentList);
 		}
 
-		return mapList;
+		return returnMap;
 	}
 
 }

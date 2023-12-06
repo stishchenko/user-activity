@@ -15,7 +15,7 @@ public interface VisitDao {
 
 	List<IntegerStatisticsPair> getTargetVisitsAmountByPeriods(String periodType, String fromDate, String toDate, String webApp);
 
-	List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String fromDate, String toDate, String webApp);
+	List<DoubleStatisticsPair> getAvgVisitTimeByPeriod(String periodType, String fromDate, String toDate, String webApp);
 
 	List<DoubleStatisticsPair> getAvgVisitTimeByPage(String fromDate, String toDate, String webApp);
 
