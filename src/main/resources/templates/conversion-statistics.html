@@ -160,10 +160,12 @@
                             <option value="line">Line Chart</option>
                         </select>
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+save=in                            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
+                                   th:checked="checked" th:field="*{dataTypes[0]}">
                             <label class="btn btn-outline-secondary" for="btncheck1">Values</label>
 
-                            <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                            <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off"
+                                   th:field="*{dataTypes[1]}">
                             <label class="btn btn-outline-secondary" for="btncheck2">Percents</label>
                         </div>-->
                         <input type="text" class="form-control me-2 text-center border border-secondary"
