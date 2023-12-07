@@ -170,7 +170,11 @@
                             <label class="btn btn-outline-secondary" for="btn_check_percent">Percents</label>
                         </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="emailHelp">
+                               style="width: 12rem" name="dateRangePicker" aria-describedby="">
+                        <input type="hidden" name="startDate" aria-describedby="" value="" id="startDate"
+                               th:field="*{startDate}">
+                        <input type="hidden" name="endDate" aria-describedby="" value="" id="endDate"
+                               th:field="*{endDate}">
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btncheck3"
                                    autocomplete="off" checked>
@@ -196,12 +200,18 @@
     <script th:inline="javascript">
         $(function () {
             $('input[name="dateRangePicker"]').daterangepicker({
-                startDate: '2022-01-01',
-                endDate: '2022-12-31',
+                startDate: [[${settings.startDate}]],
+                endDate: [[${settings.endDate}]],
                 locale: {
                     format: 'YYYY.M.DD'
                 }
             });
+
+        });
+
+        $('input[name="dateRangePicker"]').on('apply.daterangepicker', function (ev, picker) {
+            $('#startDate').val(picker.startDate.format("YYYY-MM-DD"));
+            $('#endDate').val(picker.endDate.format("YYYY-MM-DD"));
         });
 
         var type = [[${type}]];
