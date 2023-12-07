@@ -7,3 +7,5 @@ Instalation:
 5. Use comman `mvn spring-boot:run` to start program
 
 If mvn don't work try to use `./mvnw` instead.
+
+After running open page `localhost:8080/converstion`.
