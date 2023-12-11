@@ -23,66 +23,12 @@
             <div class="left-logo d-flex align-items-center">
                 <img th:src="@{/twitter_header_photo_1.png}" width="300" alt="logo">
             </div>
-            <div class="navbar flex-column align-items-start left-content">
+            <div class="navbar flex-column align-items-start left-content" th:insert="~{fragment-leftnav :: leftnav}">
                 <!-- Your left column content -->
-                <!--<h2>Statistics</h2>-->
-                <ul class="navbar-nav flex-column left-menu">
-                    <li class="nav-item mb-2">
-                        <a class="nav-link active" href="#" th:href="@{/conversion}">Conversion</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link" href="javascript:void(0)">Devices</a>
-                        <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#" th:href="@{/devices/type}">Types</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/devices/os}">OS</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/devices/browser}">Browser</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link" href="javascript:void(0)">Location</a>
-                        <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#" th:href="@{/location/country}">Countries</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/location/city}">Cities</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link" href="javascript:void(0)">Users</a>
-                        <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#" th:href="@{/users/ratio}">Global Frequency</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/users/user-page-visit}">Page`s Frequency</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link" href="javascript:void(0)">Visits</a>
-                        <ul class="navbar-nav flex-column ps-3">
-                            <li><a class="nav-link" href="#" th:href="@{/visits/amount}">Global Frequency</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/visit-time/avg-time-period}">Average Visit`s
-                                Time</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/visit-time/avg-page-period}">Average Page`s
-                                Time</a></li>
-                            <li><a class="nav-link" href="#" th:href="@{/visit-time/cancellation}">Cancellation</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </div>
         </div>
         <div class="content">
-            <div class="top-navigation p-4">
-                <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                    <div class="container-fluid">
-                        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                            <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#" th:href="@{/conversion}">Statistics</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Account</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+            <div class="top-navigation p-4" th:insert="~{fragment-topnav :: topnav}">
             </div>
             <div class="work-area d-flex flex-column p-5">
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Conversion Statistics</div>
