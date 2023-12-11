@@ -1,5 +1,7 @@
 create database activity_module;
 
+use activity_module;
+
 create table devices
 (
     device_id     varchar(255) not null
