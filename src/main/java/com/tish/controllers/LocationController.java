@@ -1,6 +1,8 @@
 package com.tish.controllers;
 
+import com.tish.models.Account;
 import com.tish.models.Settings;
+import com.tish.services.AccountService;
 import com.tish.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,25 +10,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = {"/location"})
 public class LocationController {
 
 	private final LocationService locationService;
+	private final AccountService accountService;
 
-	public LocationController(@Autowired LocationService locationService) {
+	public LocationController(@Autowired LocationService locationService, @Autowired AccountService accountService) {
 		this.locationService = locationService;
+		this.accountService = accountService;
 	}
 
 
 	@GetMapping(path = {"/country"})
 	public String getLocationCountryPage(Model model) {
-
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		model.addAttribute("type", "bar");
 		model.addAttribute("axis", "x");
 
@@ -46,7 +50,9 @@ public class LocationController {
 
 	@GetMapping(path = {"/city"})
 	public String getLocationCityPage(Model model) {
-
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		model.addAttribute("type", "bar");
 		model.addAttribute("axis", "x");
 
@@ -65,18 +71,10 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/country"})
-	public String getCountries(/*@RequestBody(required = false) String graphicType,
-											@RequestBody String statisticsType,
-											@RequestBody String dataType,
-											@RequestBody String webApp,
-											@RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/ @ModelAttribute("settings") Settings settings, Model model) {
-		// dataType  = value, percent or value+percent
-		/*List<Map<String, Double>> userMapList = locationService.getCountriesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		List<Map<String, Double>> visitMapList = locationService.getCountriesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		Map<Object, Object> allMap = new HashMap<>();
-		allMap.put("users", userMapList);
-		allMap.put("visits", visitMapList);*/
+	public String getCountries( @ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (settings.getChartType().equals("radar")) {
 			model.addAttribute("type", "radar");
@@ -123,19 +121,10 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/city"})
-	public String getCities(/*@RequestBody(required = false) String graphicType,
-										 @RequestBody String statisticsType,
-										 @RequestBody String dataType,
-										 @RequestBody String webApp,
-										 @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/ @ModelAttribute("settings") Settings settings, Model model) {
-		// dataType  = value, percent or value+percent
-		/*List<Map<String, Double>> userMapList = locationService.getCitiesStatistics("user", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		List<Map<String, Double>> visitMapList = locationService.getCitiesStatistics("visit", params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-
-		Map<Object, Object> allMap = new HashMap<>();
-		allMap.put("users", userMapList);
-		allMap.put("visits", visitMapList);*/
+	public String getCities( @ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (settings.getChartType().equals("radar")) {
 			model.addAttribute("type", "radar");
@@ -178,5 +167,16 @@ public class LocationController {
 		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
 
 		return "city-statistics";
+	}
+
+	private boolean checkLoggedAccount(Model model) {
+		Account account = accountService.checkIfLoggedAccountExists();
+
+		if (account != null) {
+			model.addAttribute("accountLogin", account.getLogin());
+			return true;
+		}
+
+		return false;
 	}
 }

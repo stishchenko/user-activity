@@ -1,6 +1,8 @@
 package com.tish.controllers;
 
+import com.tish.models.Account;
 import com.tish.models.Settings;
+import com.tish.services.AccountService;
 import com.tish.services.UserAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = "/users")
 public class UserAmountController {
 
 	private final UserAmountService userAmountService;
+	private final AccountService accountService;
 
-	public UserAmountController(@Autowired UserAmountService userAmountService) {
+	public UserAmountController(@Autowired UserAmountService userAmountService, @Autowired AccountService accountService) {
 		this.userAmountService = userAmountService;
+		this.accountService = accountService;
 	}
 
 	@GetMapping(path = {"/ratio"})
 	public String getUsersRatioPage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "user-ratio-statistics";
@@ -31,19 +37,19 @@ public class UserAmountController {
 
 	@GetMapping(path = {"/user-page-visit"})
 	public String getUsersPageVisitPage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "user-page-statistics";
 	}
 
 	@PostMapping(path = {"/ratio"})
-	public String getUsersAmount(/*@RequestBody(required = false) String graphicType,
-													@RequestBody String dataType,
-													@RequestBody String webApp,
-													@RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/ @ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> mapList = userAmountService.getUsersAmountAsSingleAndRepeat(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return mapList;*/
+	public String getUsersAmount(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (settings.getChartType().equals("pie")) {
 			model.addAttribute("type", "pie");
@@ -67,13 +73,10 @@ public class UserAmountController {
 	}
 
 	@PostMapping(path = {"/user-page-visit"})
-	public String getUserAmountByPageVisits(/*@RequestBody(required = false) String graphicType,
-															   @RequestBody String dataType,
-															   @RequestBody String webApp,
-															   @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> mapList = userAmountService.getUsersAmountByVisitTimes(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return mapList;*/
+	public String getUserAmountByPageVisits(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (settings.getChartType().equals("pie")) {
 			model.addAttribute("type", "pie");
@@ -104,5 +107,16 @@ public class UserAmountController {
 		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
 		model.addAttribute("settings", new Settings());
 		model.addAttribute("dataType", Arrays.asList("value", "percent"));
+	}
+
+	private boolean checkLoggedAccount(Model model) {
+		Account account = accountService.checkIfLoggedAccountExists();
+
+		if (account != null) {
+			model.addAttribute("accountLogin", account.getLogin());
+			return true;
+		}
+
+		return false;
 	}
 }

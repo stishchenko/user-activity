@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tish.mappers.AccountMapper">
+	<resultMap id="accountMap" type="com.tish.models.Account">
+		<id property="id" column="id" jdbcType="INTEGER"/>
+		<result property="login" column="login" jdbcType="VARCHAR"/>
+		<result property="password" column="password" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" jdbcType="VARCHAR"/>
+		<result property="apps" column="apps" jdbcType="VARCHAR"/>
+		<result property="isLoggedIn" column="isLoggedIn" jdbcType="BOOLEAN"
+				typeHandler="org.apache.ibatis.type.BooleanTypeHandler"/>
+	</resultMap>
+
+
+	<select id="checkIfAccountExists" resultMap="accountMap">
+		select *
+		from accounts
+		where login = #{login}
+	</select>
+
+	<insert id="registerAccount" parameterType="com.tish.models.Account" useGeneratedKeys="true" keyProperty="id">
+		insert into accounts(login, password, user_name)
+		values (#{login}, #{password}, #{userName})
+	</insert>
+
+	<update id="loginByAccount" parameterType="com.tish.models.Account">
+		update accounts
+		set isLoggedIn = 1
+		where id = #{id}
+	</update>
+
+	<update id="logoutByEmail" parameterType="java.lang.String">
+		update accounts
+		set isLoggedIn = 0
+		where login = #{login}
+	</update>
+
+	<select id="checkIfLoggedAccountExists" resultMap="accountMap">
+		select *
+		from accounts
+		where isLoggedIn = 1
+	</select>
+
+</mapper>
