@@ -50,12 +50,8 @@ public class VisitTimeController {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		model.addAttribute("type", "bar");
-		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
+		addDataToModel(model);
 		model.addAttribute("percent", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
-		model.addAttribute("settings", new Settings());
 		model.addAttribute("dataType", Arrays.asList("value", "percent"));
 		return "visit-cancellation-statistics";
 	}
@@ -112,8 +108,8 @@ public class VisitTimeController {
 			model.addAttribute("type", charts[1]);
 		}
 		String dataType = "value+percent";
-		if (settings.getDataTypes().contains(null)) {
-			dataType = settings.getDataTypes().get(0) != null ? "value" : "percent";
+		if (settings.getChkTypeValues() == null || settings.getChkTypePercents() == null) {
+			dataType = settings.getChkTypeValues() != null ? "value" : "percent";
 		}
 
 		Map<String, List> map = visitTimeService.getCancellations(dataType, settings.getStartDate(), settings.getEndDate(), settings.getWebApp());

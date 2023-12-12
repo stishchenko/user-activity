@@ -45,15 +45,6 @@
                             <option value="y bar">Horizontal Bar</option>
                             <option value="line">Line Chart</option>
                         </select>
-                        <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <label class="btn btn-outline-secondary data-type" for="chkTypeValues1">Values</label>
-                            <input type="checkbox" class="btn-check" autocomplete="off"
-                                   th:checked="checked" th:field="*{chkTypeValues}" value="on">
-
-                            <label class="btn btn-outline-secondary last-in-group data-type" for="chkTypePercents1">Percents</label>
-                            <input type="checkbox" class="btn-check" autocomplete="off"
-                                   th:field="*{chkTypePercents}" value="on">
-                        </div>
                         <input type="text" class="form-control me-2 text-center border border-secondary"
                                style="width: 12rem" name="dateRangePicker" aria-describedby="">
                         <input type="hidden" name="startDate" aria-describedby="" value="" id="startDate"

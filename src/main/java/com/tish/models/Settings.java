@@ -17,6 +17,8 @@ public class Settings {
 	private String periodType = "month";
 	private String chkTypeValues="";
 	private String chkTypePercents="";
+	private String chkObjectTypeUsers="";
+	private String chkObjectTypeVisits="";
 	private List<String> dataTypes = new ArrayList<>();
 	private List<String> statisticObjectType = new ArrayList<>();
 	private String startDate = "2022-01-01";

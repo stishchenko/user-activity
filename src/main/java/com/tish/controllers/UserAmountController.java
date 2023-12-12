@@ -59,8 +59,8 @@ public class UserAmountController {
 			model.addAttribute("type", charts[1]);
 		}
 		String dataType = "value+percent";
-		if (settings.getDataTypes().contains(null)) {
-			dataType = settings.getDataTypes().get(0) != null ? "value" : "percent";
+		if (settings.getChkTypeValues() == null || settings.getChkTypePercents() == null) {
+			dataType = settings.getChkTypeValues() != null ? "value" : "percent";
 		}
 
 		Map<String, List> map = userAmountService.getUsersAmountAsSingleAndRepeat(dataType, settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
@@ -86,8 +86,8 @@ public class UserAmountController {
 			model.addAttribute("type", charts[1]);
 		}
 		String dataType = "value+percent";
-		if (settings.getDataTypes().contains(null)) {
-			dataType = settings.getDataTypes().get(0) != null ? "value" : "percent";
+		if (settings.getChkTypeValues() == null || settings.getChkTypePercents() == null) {
+			dataType = settings.getChkTypeValues() != null ? "value" : "percent";
 		}
 
 		Map<String, List> map = userAmountService.getUsersAmountByVisitTimes(dataType, settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
