@@ -1,6 +1,8 @@
 package com.tish.controllers;
 
+import com.tish.models.Account;
 import com.tish.models.Settings;
+import com.tish.services.AccountService;
 import com.tish.services.VisitTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = "/visit-time")
 public class VisitTimeController {
 
 	private final VisitTimeService visitTimeService;
+	private final AccountService accountService;
 
-	public VisitTimeController(@Autowired VisitTimeService visitTimeService) {
+	public VisitTimeController(@Autowired VisitTimeService visitTimeService, @Autowired AccountService accountService) {
 		this.visitTimeService = visitTimeService;
+		this.accountService = accountService;
 	}
 
 	@GetMapping(path = {"/avg-time-period"})
 	public String getAvgVisitTimePage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "visit-avg-time-statistics";
@@ -31,6 +37,9 @@ public class VisitTimeController {
 
 	@GetMapping(path = {"/avg-page-period"})
 	public String getAvgPageStatisticsPage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "visit-avg-page-statistics";
@@ -38,6 +47,9 @@ public class VisitTimeController {
 
 	@GetMapping(path = {"/cancellation"})
 	public String getCancellationPage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		model.addAttribute("type", "bar");
 		model.addAttribute("axis", "x");
 		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
@@ -49,12 +61,10 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/avg-time-period"})
-	public String getAverageVisitTimeByPeriod(/*@RequestBody(required = false) String chartType,
-														   @RequestBody String webApp,
-														   @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*Map<String, Double> map = visitTimeService.getAvgVisitTimeByPeriod(params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return map;*/
+	public String getAverageVisitTimeByPeriod(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		Map<String, List> map = visitTimeService.getAvgVisitTimeByPeriod(settings.getPeriodType(), settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		if (settings.getChartType().equals("line")) {
 			model.addAttribute("type", "line");
@@ -70,12 +80,10 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/avg-page-period"})
-	public String getAveragePagePeriod(/*@RequestBody(required = false) String chartType,
-													@RequestBody String webApp,
-													@RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*Map<String, Double> avgMap = visitTimeService.getAvgVisitTimeByPage(params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return avgMap;*/
+	public String getAveragePagePeriod(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		Map<String, List> map = visitTimeService.getAvgVisitTimeByPage(settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 
 		if (!settings.getChartType().contains(" ")) {
@@ -92,14 +100,10 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/cancellation"})
-	public String getCancellationAmount(/*@RequestBody(required = false) String graphicType,
-														   @RequestBody String dataType,
-														   @RequestBody String webApp,
-														   @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> mapList = visitTimeService.getCancellations(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return mapList;*/
-
+	public String getCancellationAmount(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -127,5 +131,16 @@ public class VisitTimeController {
 		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
 		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
 		model.addAttribute("settings", new Settings());
+	}
+
+	private boolean checkLoggedAccount(Model model) {
+		Account account = accountService.checkIfLoggedAccountExists();
+
+		if (account != null) {
+			model.addAttribute("accountLogin", account.getLogin());
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -1,6 +1,8 @@
 package com.tish.controllers;
 
+import com.tish.models.Account;
 import com.tish.models.Settings;
+import com.tish.services.AccountService;
 import com.tish.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,20 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = "/devices")
 public class DeviceController {
 
 	private final DeviceService deviceService;
+	private final AccountService accountService;
 
-	public DeviceController(@Autowired DeviceService deviceService) {
+	public DeviceController(@Autowired DeviceService deviceService, @Autowired AccountService accountService) {
 		this.deviceService = deviceService;
+		this.accountService = accountService;
 	}
 
 
 	@GetMapping(path = {"/type"})
 	public String getDeviceTypePage(Model model) {
-
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "device-type-statistics";
@@ -33,7 +38,9 @@ public class DeviceController {
 
 	@GetMapping(path = {"/os"})
 	public String getDeviceOSPage(Model model) {
-
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "device-os-statistics";
@@ -41,19 +48,19 @@ public class DeviceController {
 
 	@GetMapping(path = {"/browser"})
 	public String getDeviceBrowserPage(Model model) {
-
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		addDataToModel(model);
 
 		return "device-browser-statistics";
 	}
 
 	@PostMapping(path = {"/type"})
-	public String getTypes(/*@RequestBody(required = false) String graphicType,
-											  @RequestBody String dataType,
-											  @RequestBody String webApp,
-											  @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/ @ModelAttribute("settings") Settings settings, Model model) {
-		//List<Map<String, Double>> deviceTypeMapList = deviceService.getDevicesByType(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
+	public String getTypes( @ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -76,14 +83,10 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/os"})
-	public String getOS(/*@RequestBody(required = false) String graphicType,
-										   @RequestBody String dataType,
-										   @RequestBody String webApp,
-										   @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> deviceOSMapList = deviceService.getDevicesByOS(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return deviceOSMapList;*/
-
+	public String getOS(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -106,13 +109,10 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/browser"})
-	public String getBrowsers(/*@RequestBody(required = false) String graphicType,
-												 @RequestBody String dataType,
-												 @RequestBody String webApp,
-												 @RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> deviceBrowserMapList = deviceService.getDevicesByBrowser(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return deviceBrowserMapList;*/
+	public String getBrowsers(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
@@ -143,5 +143,16 @@ public class DeviceController {
 		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
 		model.addAttribute("settings", new Settings());
 		model.addAttribute("dataType", Arrays.asList("value", "percent"));
+	}
+
+	private boolean checkLoggedAccount(Model model) {
+		Account account = accountService.checkIfLoggedAccountExists();
+
+		if (account != null) {
+			model.addAttribute("accountLogin", account.getLogin());
+			return true;
+		}
+
+		return false;
 	}
 }

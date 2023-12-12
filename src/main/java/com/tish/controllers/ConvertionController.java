@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = {"/conversion"})
 public class ConvertionController {
 
@@ -43,12 +42,7 @@ public class ConvertionController {
 	}
 
 	@PostMapping(path = {""})
-	public String getConvertionByPeriod(/*@RequestBody(required = false) String chartType, @RequestBody String periodType,
-													 @RequestBody String webApp,
-													 @RequestBody(required = false) String fromDate,
-													 @RequestBody(required = false) String toDate*/
-
-			/*@RequestBody Map<String, String> params,*/ @ModelAttribute("settings") Settings settings, Model model) {
+	public String getConvertionByPeriod( @ModelAttribute("settings") Settings settings, Model model) {
 
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";

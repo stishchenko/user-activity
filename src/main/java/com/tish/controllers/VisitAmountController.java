@@ -1,6 +1,8 @@
 package com.tish.controllers;
 
+import com.tish.models.Account;
 import com.tish.models.Settings;
+import com.tish.services.AccountService;
 import com.tish.services.VisitAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RestController
 @RequestMapping(path = "/visits")
 public class VisitAmountController {
 
 	private final VisitAmountService visitAmountService;
+	private final AccountService accountService;
 
-	public VisitAmountController(@Autowired VisitAmountService visitAmountService) {
+	public VisitAmountController(@Autowired VisitAmountService visitAmountService, @Autowired AccountService accountService) {
 		this.visitAmountService = visitAmountService;
+		this.accountService = accountService;
 	}
 
 	@GetMapping(path = {"/amount"})
 	public String getVisitAmountPage(Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 		model.addAttribute("type", "bar");
 		model.addAttribute("axis", "x");
 		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
@@ -35,13 +41,10 @@ public class VisitAmountController {
 	}
 
 	@PostMapping(path = {"/amount"})
-	public String getTotalVisits(/*@RequestBody(required = false) String graphicType,
-													@RequestBody String webApp,
-													@RequestBody String dataType,
-													@RequestBody String fromDate, @RequestBody String toDate*/
-			/*@RequestBody Map<String, String> params,*/@ModelAttribute("settings") Settings settings, Model model) {
-		/*List<Map<String, Double>> mapList = visitAmountService.getVisitAmount(params.get("dataType"), params.get("fromDate"), params.get("toDate"), params.get("webApp"));
-		return mapList;*/
+	public String getTotalVisits(@ModelAttribute("settings") Settings settings, Model model) {
+		if (!checkLoggedAccount(model)) {
+			return "logged-error";
+		}
 
 		if (settings.getChartType().equals("pie")) {
 			model.addAttribute("type", "pie");
@@ -62,5 +65,16 @@ public class VisitAmountController {
 		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
 
 		return "visit-amount-statistics";
+	}
+
+	private boolean checkLoggedAccount(Model model) {
+		Account account = accountService.checkIfLoggedAccountExists();
+
+		if (account != null) {
+			model.addAttribute("accountLogin", account.getLogin());
+			return true;
+		}
+
+		return false;
 	}
 }
