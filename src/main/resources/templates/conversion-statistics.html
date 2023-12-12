@@ -143,7 +143,7 @@
                                             Account
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#" th:href="@{/account/profile}">Profile</a></li>
+                                            <li><a class="dropdown-item" href="#" th:href="@{/account/profile(login=${accountLogin})}">Profile</a></li>
                                             <li><a class="dropdown-item" href="#" th:href="@{/account/logout(login=${accountLogin})}">Log out</a></li>
                                         </ul>
                                     </div>
@@ -169,7 +169,7 @@
                             <option value="line">Line Chart</option>
                         </select>
                         <!--<div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-save=in                            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
+                       <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
                                    th:checked="checked" th:field="*{dataTypes[0]}">
                             <label class="btn btn-outline-secondary" for="btncheck1">Values</label>
 

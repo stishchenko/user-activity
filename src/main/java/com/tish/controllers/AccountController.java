@@ -79,5 +79,13 @@ public class AccountController {
 		return "redirect:/welcome/index";
 	}
 
+	@GetMapping("/profile")
+	public String openAccountPage(Model model, @RequestParam String login) {
+		Account account = accountService.checkIfAccountExists(login);
+		model.addAttribute("account", account);
+
+		return "account-page";
+	}
+
 
 }
