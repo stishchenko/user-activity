@@ -16,7 +16,7 @@ create table if not exists accounts
 ) collate = utf8mb4_unicode_ci;
 
 insert into accounts(login, password, user_name)
-values ('login@gmail.com', 'login', 'login');
+values ('login@gmail.com', '$2a$10$2.dLUOIZvCO83zjeSZoAkOY9PJ96BRRYfQk9X09QijfV5A0lWftG.', 'login');
 
 create table if not exists devices
 (
