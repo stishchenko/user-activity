@@ -49,7 +49,7 @@
                         <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
                             <label class="btn btn-outline-secondary data-type" for="chkTypeValues1">Values</label>
                             <input type="checkbox" class="btn-check" autocomplete="off"
-                                   th:checked="checked" th:field="*{chkTypeValues}" value="on">
+                                   th:field="*{chkTypeValues}" value="on">
 
                             <label class="btn btn-outline-secondary last-in-group data-type" for="chkTypePercents1">Percents</label>
                             <input type="checkbox" class="btn-check" autocomplete="off"
@@ -70,6 +70,8 @@
                 <div class="d-flex justify-content-center">
                     <canvas id="myPerChart"></canvas>
                 </div>
+                <a class="btn btn-primary btn-download-data mt-4" href="#" th:href="@{/download}">Download file</a>
+
                 <!-- Your bottom block content -->
             </div>
         </div>
@@ -113,7 +115,7 @@
             });
         }
 
-        if (!Array.isArray(dataType)) {
+        if (!dataType.includes("+")) {
             if (dataType === 'value') {
                 var values = [[${values}]];
                 var ctx = document.getElementById("myValChart").getContext("2d");

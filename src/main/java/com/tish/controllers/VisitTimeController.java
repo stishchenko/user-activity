@@ -4,6 +4,7 @@ import com.tish.models.Account;
 import com.tish.models.Settings;
 import com.tish.services.AccountService;
 import com.tish.services.VisitTimeService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,42 +27,82 @@ public class VisitTimeController {
 	}
 
 	@GetMapping(path = {"/avg-time-period"})
-	public String getAvgVisitTimePage(Model model) {
+	public String getAvgVisitTimePage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+
+		model.addAttribute("type", "bar");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		Map<String, List> map = visitTimeService.getAvgVisitTimeByPeriod("year", null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+
+		session.setAttribute("dataType", "value");
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "avg visit time");
+		session.setAttribute("app", "app1");
 
 		return "visit-avg-time-statistics";
 	}
 
 	@GetMapping(path = {"/avg-page-period"})
-	public String getAvgPageStatisticsPage(Model model) {
+	public String getAvgPageStatisticsPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		Map<String, List> map = visitTimeService.getAvgVisitTimeByPage(null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+
+		session.setAttribute("dataType", "value");
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "avg page visit time");
+		session.setAttribute("app", "app1");
 
 		return "visit-avg-page-statistics";
 	}
 
 	@GetMapping(path = {"/cancellation"})
-	public String getCancellationPage(Model model) {
+	public String getCancellationPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
-		model.addAttribute("percent", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("dataType", Arrays.asList("value", "percent"));
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+
+		Map<String, List> map = visitTimeService.getCancellations(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "cancellation");
+		session.setAttribute("app", "app1");
+
 		return "visit-cancellation-statistics";
 	}
 
 	@PostMapping(path = {"/avg-time-period"})
-	public String getAverageVisitTimeByPeriod(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getAverageVisitTimeByPeriod(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		Map<String, List> map = visitTimeService.getAvgVisitTimeByPeriod(settings.getPeriodType(), settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		if (settings.getChartType().equals("line")) {
 			model.addAttribute("type", "line");
 		} else {
@@ -69,19 +110,25 @@ public class VisitTimeController {
 			model.addAttribute("axis", charts[0]);
 			model.addAttribute("type", charts[1]);
 		}
+
+		Map<String, List> map = visitTimeService.getAvgVisitTimeByPeriod(settings.getPeriodType(), settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
+
+		session.setAttribute("dataType", "value");
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "avg visit time");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "visit-avg-time-statistics";
 	}
 
 	@PostMapping(path = {"/avg-page-period"})
-	public String getAveragePagePeriod(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getAveragePagePeriod(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		Map<String, List> map = visitTimeService.getAvgVisitTimeByPage(settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
-
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -89,14 +136,22 @@ public class VisitTimeController {
 			model.addAttribute("axis", charts[0]);
 			model.addAttribute("type", charts[1]);
 		}
+
+		Map<String, List> map = visitTimeService.getAvgVisitTimeByPage(settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
+
+		session.setAttribute("dataType", "value");
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "avg page visit time");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "visit-avg-page-statistics";
 	}
 
 	@PostMapping(path = {"/cancellation"})
-	public String getCancellationAmount(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getCancellationAmount(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -116,17 +171,16 @@ public class VisitTimeController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "cancellation");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "visit-cancellation-statistics";
-	}
-
-	private void addDataToModel(Model model) {
-		model.addAttribute("type", "bar");
-		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
-		model.addAttribute("settings", new Settings());
 	}
 
 	private boolean checkLoggedAccount(Model model) {

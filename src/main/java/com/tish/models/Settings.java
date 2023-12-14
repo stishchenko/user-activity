@@ -15,10 +15,10 @@ import java.util.List;
 public class Settings {
 	private String chartType;
 	private String periodType = "month";
-	private String chkTypeValues="";
-	private String chkTypePercents="";
-	private String chkObjectTypeUsers="";
-	private String chkObjectTypeVisits="";
+	private String chkTypeValues="on";
+	private String chkTypePercents="on";
+	private String chkObjectTypeUsers="on";
+	private String chkObjectTypeVisits="on";
 	private List<String> dataTypes = new ArrayList<>();
 	private List<String> statisticObjectType = new ArrayList<>();
 	private String startDate = "2022-01-01";

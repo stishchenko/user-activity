@@ -4,6 +4,7 @@ import com.tish.models.Account;
 import com.tish.models.Settings;
 import com.tish.services.AccountService;
 import com.tish.services.UserAmountService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,27 +27,61 @@ public class UserAmountController {
 	}
 
 	@GetMapping(path = {"/ratio"})
-	public String getUsersRatioPage(Model model) {
+	public String getUsersRatioPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+
+		Map<String, List> map = userAmountService.getUsersAmountAsSingleAndRepeat(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "user ratio");
+		session.setAttribute("app", "app1");
 
 		return "user-ratio-statistics";
 	}
 
 	@GetMapping(path = {"/user-page-visit"})
-	public String getUsersPageVisitPage(Model model) {
+	public String getUsersPageVisitPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+
+		Map<String, List> map = userAmountService.getUsersAmountByVisitTimes(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "user page ratio");
+		session.setAttribute("app", "app1");
 
 		return "user-page-statistics";
 	}
 
 	@PostMapping(path = {"/ratio"})
-	public String getUsersAmount(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getUsersAmount(@ModelAttribute("settings") Settings settings, HttpSession session,  Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -67,13 +102,20 @@ public class UserAmountController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "user ratio");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "user-ratio-statistics";
 	}
 
 	@PostMapping(path = {"/user-page-visit"})
-	public String getUserAmountByPageVisits(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getUserAmountByPageVisits(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -94,19 +136,16 @@ public class UserAmountController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "user page ratio");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "user-page-statistics";
-	}
-
-	private void addDataToModel(Model model) {
-		model.addAttribute("type", "bar");
-		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("percent", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
-		model.addAttribute("settings", new Settings());
-		model.addAttribute("dataType", Arrays.asList("value", "percent"));
 	}
 
 	private boolean checkLoggedAccount(Model model) {

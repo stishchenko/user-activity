@@ -1,4 +1,6 @@
-create database activity_module;
+drop database if exists activity_module;
+
+create database if not exists activity_module;
 
 use activity_module;
 
@@ -14,7 +16,7 @@ create table if not exists accounts
 ) collate = utf8mb4_unicode_ci;
 
 insert into accounts(login, password, user_name)
-values ('login', 'login', 'login');
+values ('login@gmail.com', 'login', 'login');
 
 create table if not exists devices
 (

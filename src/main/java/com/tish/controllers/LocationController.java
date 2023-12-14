@@ -4,6 +4,7 @@ import com.tish.models.Account;
 import com.tish.models.Settings;
 import com.tish.services.AccountService;
 import com.tish.services.LocationService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,27 +28,72 @@ public class LocationController {
 
 
 	@GetMapping(path = {"/country"})
-	public String getLocationCountryPage(Model model) {
+	public String getLocationCountryPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		fillModel(model);
+
+		model.addAttribute("settings", new Settings());
+
+		model.addAttribute("type", "bar");
+		model.addAttribute("axis", "x");
+
+		String dataType = "value+percent";
+		String objectType = "user+visit";
+
+		Map<String, List> map = locationService.getCountriesStatistics(objectType, dataType, null, null, "app1");
+		fillModel(model, map, objectType);
+
+		model.addAttribute("objectType", objectType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("objectType", objectType);
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("userValues", map.get("userValues"));
+		session.setAttribute("userPercent", map.get("userPercent"));
+		session.setAttribute("visitValues", map.get("visitValues"));
+		session.setAttribute("visitPercent", map.get("visitPercent"));
+		session.setAttribute("metric", "countries");
+		session.setAttribute("app", "app1");
 
 		return "country-statistics";
 	}
 
 	@GetMapping(path = {"/city"})
-	public String getLocationCityPage(Model model) {
+	public String getLocationCityPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		fillModel(model);
-		
+		model.addAttribute("settings", new Settings());
+
+		model.addAttribute("type", "bar");
+		model.addAttribute("axis", "x");
+
+		String dataType = "value+percent";
+		String objectType = "user+visit";
+
+		Map<String, List> map = locationService.getCitiesStatistics(objectType, dataType, null, null, "app1");
+		fillModel(model, map, objectType);
+
+		model.addAttribute("objectType", objectType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("objectType", objectType);
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("userValues", map.get("userValues"));
+		session.setAttribute("userPercent", map.get("userPercent"));
+		session.setAttribute("visitValues", map.get("visitValues"));
+		session.setAttribute("visitPercent", map.get("visitPercent"));
+		session.setAttribute("metric", "cities");
+		session.setAttribute("app", "app1");
+
 		return "city-statistics";
 	}
 
 	@PostMapping(path = {"/country"})
-	public String getCountries(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getCountries(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -72,15 +118,24 @@ public class LocationController {
 		Map<String, List> map = locationService.getCountriesStatistics(objectType, dataType, settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		fillModel(model, map, objectType);
 
-		model.addAttribute("objectType", objectType.contains("+") ? settings.getStatisticObjectType() : objectType);
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("objectType", objectType);
+		model.addAttribute("dataType", dataType);
 
+		session.setAttribute("objectType", objectType);
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("userValues", map.get("userValues"));
+		session.setAttribute("userPercent", map.get("userPercent"));
+		session.setAttribute("visitValues", map.get("visitValues"));
+		session.setAttribute("visitPercent", map.get("visitPercent"));
+		session.setAttribute("metric", "countries");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "country-statistics";
 	}
 
 	@PostMapping(path = {"/city"})
-	public String getCities(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getCities(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -105,26 +160,20 @@ public class LocationController {
 		Map<String, List> map = locationService.getCitiesStatistics(objectType, dataType, settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		fillModel(model, map, objectType);
 
-		model.addAttribute("objectType", objectType.contains("+") ? settings.getStatisticObjectType() : objectType);
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("objectType", objectType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("objectType", objectType);
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("userValues", map.get("userValues"));
+		session.setAttribute("userPercent", map.get("userPercent"));
+		session.setAttribute("visitValues", map.get("visitValues"));
+		session.setAttribute("visitPercent", map.get("visitPercent"));
+		session.setAttribute("metric", "cities");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "city-statistics";
-	}
-
-	private void fillModel(Model model) {
-		model.addAttribute("type", "bar");
-		model.addAttribute("axis", "x");
-
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
-		model.addAttribute("userValues", Arrays.asList(10, 15, 17, 13, 20, 8));
-		model.addAttribute("visitValues", Arrays.asList(12, 17, 23, 12, 22, 14));
-		model.addAttribute("userPercent", Arrays.asList(10, 15, 17, 13, 20, 8));
-		model.addAttribute("visitPercent", Arrays.asList(12, 17, 23, 12, 22, 14));
-
-		model.addAttribute("settings", new Settings());
-
-		model.addAttribute("objectType", Arrays.asList("user", "visit"));
-		model.addAttribute("dataType", Arrays.asList("value", "percent"));
 	}
 
 	private void fillModel(Model model, Map<String, List> map, String objectType) {

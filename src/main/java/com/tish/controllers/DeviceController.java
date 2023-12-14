@@ -4,6 +4,7 @@ import com.tish.models.Account;
 import com.tish.models.Settings;
 import com.tish.services.AccountService;
 import com.tish.services.DeviceService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,37 +28,85 @@ public class DeviceController {
 
 
 	@GetMapping(path = {"/type"})
-	public String getDeviceTypePage(Model model) {
+	public String getDeviceTypePage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+		Map<String, List> map = deviceService.getDevicesByType(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "types");
+		session.setAttribute("app", "app1");
 
 		return "device-type-statistics";
 	}
 
 	@GetMapping(path = {"/os"})
-	public String getDeviceOSPage(Model model) {
+	public String getDeviceOSPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+		Map<String, List> map = deviceService.getDevicesByOS(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "os platforms");
+		session.setAttribute("app", "app1");
 
 		return "device-os-statistics";
 	}
 
 	@GetMapping(path = {"/browser"})
-	public String getDeviceBrowserPage(Model model) {
+	public String getDeviceBrowserPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		addDataToModel(model);
+		model.addAttribute("type", "pie");
+		model.addAttribute("axis", "x");
+		model.addAttribute("settings", new Settings());
+
+		String dataType = "value+percent";
+		Map<String, List> map = deviceService.getDevicesByBrowser(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "browsers");
+		session.setAttribute("app", "app1");
 
 		return "device-browser-statistics";
 	}
 
 	@PostMapping(path = {"/type"})
-	public String getTypes( @ModelAttribute("settings") Settings settings, Model model) {
+	public String getTypes(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -77,13 +126,20 @@ public class DeviceController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "types");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "device-type-statistics";
 	}
 
 	@PostMapping(path = {"/os"})
-	public String getOS(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getOS(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -103,13 +159,20 @@ public class DeviceController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "os platforms");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "device-os-statistics";
 	}
 
 	@PostMapping(path = {"/browser"})
-	public String getBrowsers(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getBrowsers(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -130,19 +193,16 @@ public class DeviceController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "browsers");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "device-browser-statistics";
-	}
-
-	private void addDataToModel(Model model) {
-		model.addAttribute("type", "bar");
-		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("percent", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
-		model.addAttribute("settings", new Settings());
-		model.addAttribute("dataType", Arrays.asList("value", "percent"));
 	}
 
 	private boolean checkLoggedAccount(Model model) {

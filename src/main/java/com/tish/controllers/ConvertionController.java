@@ -34,36 +34,25 @@ public class ConvertionController {
 	}
 
 	@GetMapping(path = {""})
-	public String getConvertionPage(Model model) {
+	public String getConvertionPage(HttpSession session, Model model) {
 
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
 		model.addAttribute("type", "bar");
 		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
+		Map<String, List> map = conversionService.getConversion("year", null, null, "app1");
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("settings", new Settings());
 
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "conversion");
+		session.setAttribute("dataType", "value");
+		session.setAttribute("app", "app1");
 
 		return "conversion-statistics";
-	}
-
-	@GetMapping("/download")
-	public ResponseEntity<String> download(HttpSession session) {
-
-		StringBuilder builder = new StringBuilder("labels;values\n");
-		List<String> labels = (List<String>) session.getAttribute("labels");
-		List<Double> values = (List<Double>) session.getAttribute("values");
-
-		for (int i = 0; i < labels.size(); i++) {
-			builder.append(labels.get(i)).append(";").append(values.get(i)).append("\n");
-		}
-
-		return ResponseEntity
-				.ok()
-				.header("Content-Disposition", "attachment; filename=conversion.csv")
-				.body(builder.toString());
 	}
 
 	@PostMapping(path = {""})
@@ -76,20 +65,20 @@ public class ConvertionController {
 		Map<String, List> map = conversionService.getConversion(settings.getPeriodType(), settings.getStartDate(), settings.getEndDate(), settings.getWebApp());
 		if (settings.getChartType().equals("line")) {
 			model.addAttribute("type", "line");
-			session.setAttribute("type", "line");
 		} else {
 			String[] charts = settings.getChartType().split(" ");
 			model.addAttribute("axis", charts[0]);
 			model.addAttribute("type", charts[1]);
-
-			session.setAttribute("axis", charts[0]);
-			session.setAttribute("type", charts[1]);
 		}
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 
 		session.setAttribute("labels", map.get("labels"));
 		session.setAttribute("values", map.get("values"));
+		session.setAttribute("metric", "conversion");
+		session.setAttribute("dataType", "value");
+		session.setAttribute("app", settings.getWebApp());
+
 		return "conversion-statistics";
 	}
 

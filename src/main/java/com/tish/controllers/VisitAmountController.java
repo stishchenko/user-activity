@@ -4,6 +4,7 @@ import com.tish.models.Account;
 import com.tish.models.Settings;
 import com.tish.services.AccountService;
 import com.tish.services.VisitAmountService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,22 +27,33 @@ public class VisitAmountController {
 	}
 
 	@GetMapping(path = {"/amount"})
-	public String getVisitAmountPage(Model model) {
+	public String getVisitAmountPage(HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
-		model.addAttribute("type", "bar");
+		model.addAttribute("type", "pie");
 		model.addAttribute("axis", "x");
-		model.addAttribute("values", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("percent", Arrays.asList(10, 15, 12, 17, 30, 22));
-		model.addAttribute("labels", Arrays.asList("1", "2", "3", "4", "5", "6"));
 		model.addAttribute("settings", new Settings());
-		model.addAttribute("dataType", Arrays.asList("value", "percent"));
+
+		String dataType = "value+percent";
+		Map<String, List> map = visitAmountService.getVisitAmount(dataType, null, null, "app1");
+		model.addAttribute("labels", map.get("labels"));
+		model.addAttribute("values", map.get("values"));
+		model.addAttribute("percent", map.get("percent"));
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "visit amount");
+		session.setAttribute("app", "app1");
+
 		return "visit-amount-statistics";
 	}
 
 	@PostMapping(path = {"/amount"})
-	public String getTotalVisits(@ModelAttribute("settings") Settings settings, Model model) {
+	public String getTotalVisits(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
@@ -62,7 +74,14 @@ public class VisitAmountController {
 		model.addAttribute("labels", map.get("labels"));
 		model.addAttribute("values", map.get("values"));
 		model.addAttribute("percent", map.get("percent"));
-		model.addAttribute("dataType", dataType.contains("+") ? settings.getDataTypes() : dataType);
+		model.addAttribute("dataType", dataType);
+
+		session.setAttribute("dataType", dataType);
+		session.setAttribute("labels", map.get("labels"));
+		session.setAttribute("values", map.get("values"));
+		session.setAttribute("percent", map.get("percent"));
+		session.setAttribute("metric", "visit amount");
+		session.setAttribute("app", settings.getWebApp());
 
 		return "visit-amount-statistics";
 	}
