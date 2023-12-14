@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class Settings {
 	private String chartType;
-	private String periodType = "month";
+	private String periodType = "year";
 	private String chkTypeValues="on";
 	private String chkTypePercents="on";
 	private String chkObjectTypeUsers="on";

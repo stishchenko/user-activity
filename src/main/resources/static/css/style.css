@@ -58,6 +58,10 @@ a.login-btn.btn-primary:hover {
     color: red;
 }
 
+.chk-error-list li{
+    color: red;
+}
+
 .left-content {
     padding-left: 2rem;
 }

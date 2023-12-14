@@ -53,11 +53,11 @@
                                th:field="*{endDate}">
                         <div class="btn-group me-2" role="group" aria-label="Period type checkbox group">
                             <input type="radio" class="btn-check" name="chart-interval" id="btn_check_month"
-                                   autocomplete="off" value="month" th:field="*{periodType}" checked>
+                                   autocomplete="off" value="month" th:field="*{periodType}">
                             <label class="btn btn-outline-secondary period-type" for="btn_check_month">Month</label>
 
                             <input type="radio" class="btn-check" name="chart-interval" id="btn_check_year"
-                                   autocomplete="off" value="year" th:field="*{periodType}">
+                                   autocomplete="off" value="year" th:field="*{periodType}" checked>
                             <label class="btn btn-outline-secondary period-type" for="btn_check_year">Year</label>
                         </div>
                         <input type="submit" value="Update chart" class="btn btn-secondary">

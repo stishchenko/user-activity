@@ -43,7 +43,7 @@
             margin: auto;
         }
 
-        .btn-primary:hover{
+        .btn-primary:hover {
             background-color: white;
             color: blue;
         }
@@ -79,10 +79,10 @@
                 <div class="left-div ms-5">
                     <div class="inputs">
                         <label> Login
-                            <input type="email" readonly th:field="${account.login}">
+                            <label th:text="${account.login}"></label>
                         </label>
                         <label> Name
-                            <input type="text" readonly th:field="${account.userName}">
+                            <label th:text="${account.userName}"></label>
                         </label>
                     </div>
                 </div>

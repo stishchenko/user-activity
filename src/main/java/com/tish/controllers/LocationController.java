@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -93,9 +94,21 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/country"})
-	public String getCountries(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getCountries(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
+		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+		if (settings.getChkObjectTypeUsers() == null && settings.getChkObjectTypeVisits() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of object - users or visits - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "country-statistics";
 		}
 
 		if (settings.getChartType().equals("radar")) {
@@ -135,9 +148,21 @@ public class LocationController {
 	}
 
 	@PostMapping(path = {"/city"})
-	public String getCities(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getCities(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
+		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+		if (settings.getChkObjectTypeUsers() == null && settings.getChkObjectTypeVisits() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of object - users or visits - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "city-statistics";
 		}
 
 		if (settings.getChartType().equals("radar")) {
