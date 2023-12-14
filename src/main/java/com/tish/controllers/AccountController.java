@@ -59,7 +59,7 @@ public class AccountController {
 		if (existingAccount == null) {
 			result.rejectValue("login", null,
 					"This account is not exists or your login is wrong");
-		} else if (!existingAccount.getPassword().equals(account.getPassword())) {
+		} else if (!accountService.checkPassword(account.getPassword(), existingAccount.getPassword())) {
 			result.rejectValue("password", null,
 					"Wrong password");
 		}

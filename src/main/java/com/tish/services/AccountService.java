@@ -2,6 +2,7 @@ package com.tish.services;
 
 import com.tish.daos.AccountDao;
 import com.tish.models.Account;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class AccountService {
 	}
 
 	public void registerAccount(Account account) {
+		account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
 		accountDao.registerAccount(account);
 	}
 
@@ -32,5 +34,9 @@ public class AccountService {
 
 	public Account checkIfLoggedAccountExists() {
 		return accountDao.checkIfLoggedAccountExists();
+	}
+
+	public boolean checkPassword(String currentPassword, String hashedPassword) {
+		return BCrypt.checkpw(currentPassword, hashedPassword);
 	}
 }
