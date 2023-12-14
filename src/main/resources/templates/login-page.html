@@ -25,6 +25,10 @@
         label {
             margin: 10px;
         }
+
+        li {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +43,12 @@
                 <label>
                     <input type="password" placeholder="Enter password" th:field="*{password}">
                 </label>
+                <ul class="list-unstyled" th:if="${#fields.hasErrors('*')}">
+                    <li th:each="error : ${#fields.errors('*')}" th:text="${error}">
+                    </li>
+                </ul>
             </div>
+
             <input type="submit" value="Sign in" class="btn btn-primary">
         </form>
     </div>

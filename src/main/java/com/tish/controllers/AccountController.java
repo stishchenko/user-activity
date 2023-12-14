@@ -2,12 +2,15 @@ package com.tish.controllers;
 
 import com.tish.models.Account;
 import com.tish.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Validated
 @Controller
 @RequestMapping(path = {"/account"})
 public class AccountController {
