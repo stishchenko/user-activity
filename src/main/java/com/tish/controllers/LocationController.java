@@ -103,7 +103,7 @@ public class LocationController {
 			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
 		}
 		if (settings.getChkObjectTypeUsers() == null && settings.getChkObjectTypeVisits() == null) {
-			result.rejectValue("dataTypes", null, "At least one type of object - users or visits - must be chosen");
+			result.rejectValue("objectTypes", null, "At least one type of object - users or visits - must be chosen");
 		}
 
 		if (result.hasErrors()) {
@@ -157,7 +157,7 @@ public class LocationController {
 			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
 		}
 		if (settings.getChkObjectTypeUsers() == null && settings.getChkObjectTypeVisits() == null) {
-			result.rejectValue("dataTypes", null, "At least one type of object - users or visits - must be chosen");
+			result.rejectValue("objectTypes", null, "At least one type of object - users or visits - must be chosen");
 		}
 
 		if (result.hasErrors()) {

@@ -34,34 +34,42 @@
                 <div class="work-header d-flex justify-content-center mb-4 mt-6 fs-2">Visit Frequency Statistics
                 </div>
                 <div class="d-flex justify-content-center mb-4">
-                    <form class="d-flex" th:action="@{/visits/amount}" th:object="${settings}" method="post">
-                        <select class="form-select me-2 border border-secondary" aria-label="Current app"
-                                th:field="*{webApp}">
-                            <option value="app1" selected>app1</option>
-                            <option value="app2">app2</option>
-                        </select>
-                        <select class="form-select me-2 border border-secondary" aria-label="Chart type"
-                                th:field="*{chartType}">
-                            <option value="pie" selected>Pie Chart</option>
-                            <option value="x bar" selected>Vertical Bar</option>
-                            <option value="y bar">Horizontal Bar</option>
-                        </select>
-                        <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
-                            <label class="btn btn-outline-secondary data-type" for="chkTypeValues1">Values</label>
-                            <input type="checkbox" class="btn-check" autocomplete="off"
-                                   th:field="*{chkTypeValues}" value="on">
+                    <form th:action="@{/visits/amount}" th:object="${settings}" method="post">
+                        <div class="d-flex">
+                            <select class="form-select me-2 border border-secondary" aria-label="Current app"
+                                    th:field="*{webApp}">
+                                <option value="app1" selected>app1</option>
+                                <option value="app2">app2</option>
+                            </select>
+                            <select class="form-select me-2 border border-secondary" aria-label="Chart type"
+                                    th:field="*{chartType}">
+                                <option value="pie" selected>Pie Chart</option>
+                                <option value="x bar" selected>Vertical Bar</option>
+                                <option value="y bar">Horizontal Bar</option>
+                            </select>
+                            <div class="btn-group me-2" role="group" aria-label="Basic checkbox toggle button group">
+                                <label class="btn btn-outline-secondary data-type" for="chkTypeValues1">Values</label>
+                                <input type="checkbox" class="btn-check" autocomplete="off"
+                                       th:field="*{chkTypeValues}" value="on">
 
-                            <label class="btn btn-outline-secondary last-in-group data-type" for="chkTypePercents1">Percents</label>
-                            <input type="checkbox" class="btn-check" autocomplete="off"
-                                   th:field="*{chkTypePercents}" value="on">
+                                <label class="btn btn-outline-secondary last-in-group data-type" for="chkTypePercents1">Percents</label>
+                                <input type="checkbox" class="btn-check" autocomplete="off"
+                                       th:field="*{chkTypePercents}" value="on">
+                            </div>
+                            <input type="text" class="form-control me-2 text-center border border-secondary"
+                                   style="width: 12rem" name="dateRangePicker" aria-describedby="">
+                            <input type="hidden" name="startDate" aria-describedby="" value="" id="startDate"
+                                   th:field="*{startDate}">
+                            <input type="hidden" name="endDate" aria-describedby="" value="" id="endDate"
+                                   th:field="*{endDate}">
+                            <input type="submit" value="Update chart" class="btn btn-secondary">
                         </div>
-                        <input type="text" class="form-control me-2 text-center border border-secondary"
-                               style="width: 12rem" name="dateRangePicker" aria-describedby="">
-                        <input type="hidden" name="startDate" aria-describedby="" value="" id="startDate"
-                               th:field="*{startDate}">
-                        <input type="hidden" name="endDate" aria-describedby="" value="" id="endDate"
-                               th:field="*{endDate}">
-                        <input type="submit" value="Update chart" class="btn btn-secondary">
+                        <div>
+                            <ul class="chk-error-list list-unstyled" th:if="${#fields.hasErrors('*')}">
+                                <li th:each="error : ${#fields.errors('*')}" th:text="${error}">
+                                </li>
+                            </ul>
+                        </div>
                     </form>
                 </div>
                 <div class="d-flex justify-content-center">
@@ -71,7 +79,12 @@
                     <canvas id="myPerChart"></canvas>
                 </div>
 
-                <a class="btn btn-primary btn-download-data mt-4" href="#" th:href="@{/download}">Download file</a>
+                <div th:switch="${chkErrorClick}">
+                    <p th:case="true"></p>
+                    <p th:case="null">
+                        <a class="btn btn-primary btn-download-data mt-4 " th:href="@{/download}">Download file</a>
+                    </p>
+                </div>
 
                 <!-- Your bottom block content -->
             </div>

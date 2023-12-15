@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -81,9 +82,18 @@ public class UserAmountController {
 	}
 
 	@PostMapping(path = {"/ratio"})
-	public String getUsersAmount(@ModelAttribute("settings") Settings settings, HttpSession session,  Model model) {
+	public String getUsersAmount(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
+		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "user-ratio-statistics";
 		}
 
 		if (settings.getChartType().equals("pie")) {
@@ -115,9 +125,18 @@ public class UserAmountController {
 	}
 
 	@PostMapping(path = {"/user-page-visit"})
-	public String getUserAmountByPageVisits(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getUserAmountByPageVisits(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
+		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "user-page-statistics";
 		}
 
 		if (settings.getChartType().equals("pie")) {

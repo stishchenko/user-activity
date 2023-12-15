@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -151,10 +152,20 @@ public class VisitTimeController {
 	}
 
 	@PostMapping(path = {"/cancellation"})
-	public String getCancellationAmount(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getCancellationAmount(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "visit-cancellation-statistics";
+		}
+
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {

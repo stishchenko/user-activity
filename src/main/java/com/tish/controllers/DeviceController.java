@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -106,10 +107,20 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/type"})
-	public String getTypes(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getTypes(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "device-type-statistics";
+		}
+
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -139,10 +150,20 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/os"})
-	public String getOS(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getOS(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
 		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "device-os-statistics";
+		}
+
 		if (!settings.getChartType().contains(" ")) {
 			model.addAttribute("type", settings.getChartType());
 		} else {
@@ -172,9 +193,18 @@ public class DeviceController {
 	}
 
 	@PostMapping(path = {"/browser"})
-	public String getBrowsers(@ModelAttribute("settings") Settings settings, HttpSession session, Model model) {
+	public String getBrowsers(@ModelAttribute("settings") Settings settings, BindingResult result, HttpSession session, Model model) {
 		if (!checkLoggedAccount(model)) {
 			return "logged-error";
+		}
+
+		if (settings.getChkTypeValues() == null && settings.getChkTypePercents() == null) {
+			result.rejectValue("dataTypes", null, "At least one type of data - values or percents - must be chosen");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("chkErrorClick", true);
+			return "device-browser-statistics";
 		}
 
 		if (!settings.getChartType().contains(" ")) {
